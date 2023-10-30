@@ -63,10 +63,10 @@ void run(PLC_Input inputs[], int size);
 
 #define maxval(a,b) ((a>b)?a:b)
 
-#define MAX_INPUT 100
+#define PLC_MAX_INPUT 100
 
-PLC_Input global_inputs[MAX_INPUT];
-int global_size = MAX_INPUT;
+PLC_Input global_inputs[PLC_MAX_INPUT];
+int global_size = PLC_MAX_INPUT;
 
 void timer_notify(sigval_t val)
 {
@@ -109,7 +109,7 @@ int main(int argc,char **argv)
     timerValues.it_value.tv_nsec = tv_nsec;
     // Not setting it_interval because we want the timer to run only once.
 
-    printf("common_ticktime__: %ld ns\n", common_ticktime__);
+    printf("common_ticktime__: %d ns\n", common_ticktime__);
 
     printf("\n - timerValues - \n");
     printf("interval tv_sec = %ld, tv_nsec = %ld\n", timerValues.it_interval.tv_sec, timerValues.it_interval.tv_nsec); 
