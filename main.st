@@ -1,0 +1,22 @@
+PROGRAM My_Program
+  VAR
+    button1 AT %IX0.0 : BOOL := TRUE;
+    button2 AT %IX0.1 : BOOL := TRUE;
+    led AT %QX0.0 : BOOL;
+  END_VAR
+  VAR
+    LED_STATE : BOOL;
+  END_VAR
+
+  LED_STATE := AND(button1, button2);
+  led := LED_STATE;
+END_PROGRAM
+
+
+CONFIGURATION STD_CONF
+
+  RESOURCE STD_RESSOURCE ON PLC
+    TASK TaskMain(INTERVAL := T#50ms,PRIORITY := 0);
+    PROGRAM Inst0 WITH TaskMain : My_Program;
+  END_RESOURCE
+END_CONFIGURATION

@@ -1,0 +1,10 @@
+# object files
+*.o
+
+# executables
+softplc
+
+# Generated files
+POUS.*
+LOCATED_VARIABLES.h
+VARIABLES.csv
