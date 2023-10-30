@@ -28,6 +28,7 @@
 
 #include "iec_std_lib.h"
 #include <stdio.h>
+#include <string.h>
 
 #include "inputs.h"
 
@@ -77,31 +78,79 @@ static int tick = 0;
 
 //extern MY_PROGRAM INST0;
 
+#define MAX_INPUTS 1000
+#define MAX_LINE_LENGTH 512
 
-void run(PLC_Input inputs[], int size)
+void set_plc_input(const char *name, const char *type, PLC_Value value) {
+    if (strcmp(name, "IX0.1") == 0) {
+        if (strcmp(type, "BOOL") == 0) {
+            *__IX0_1 = value._BOOL;
+        }
+        // Add more type checks if needed
+    } else if (strcmp(name, "IX0.0") == 0) {
+        if (strcmp(type, "BOOL") == 0) {
+            *__IX0_0 = value._BOOL;
+        }
+        // Add more type checks if needed
+    }
+    // Add more PLC input name checks if needed
+}
+
+
+
+void read_configuration(const char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Error opening configuration file");
+        return;
+    }
+
+    char line[MAX_LINE_LENGTH];
+    while (fgets(line, sizeof(line), file)) {
+        char name[MAX_LINE_LENGTH], type[MAX_LINE_LENGTH];
+        PLC_Value value;
+
+        int parsedItems = sscanf(line, "%[^,],%[^,],", name, type);
+        
+        if (parsedItems != 2) {
+            printf("Warning: Malformed line detected: %s\n", line);
+            continue;
+        }
+
+        if (strcmp(type, "BOOL") == 0) {
+            int boolValue;
+            if (sscanf(line, "%*[^,],%*[^,],%d", &boolValue) != 1 || (boolValue != 0 && boolValue != 1)) {
+                printf("Warning: Invalid BOOL value in line: %s\n", line);
+                continue;
+            }
+            value._BOOL = boolValue;
+        }
+        else if (strcmp(type, "SINT") == 0) {
+            if (sscanf(line, "%*[^,],%*[^,],%d", &(value._SINT)) != 1) {
+                printf("Warning: Invalid SINT value in line: %s\n", line);
+                continue;
+            }
+        }
+        // Add more type-to-value conversions similarly
+
+        // Assign value to PLC variable
+        set_plc_input(name, type, value);
+    }
+
+    fclose(file);
+}
+
+
+void run(int argc, char **argv)
 {
+  if (argc != 2) {
+        printf("Usage: %s <configuration file>\n", argv[0]);
+        return;
+    }
 
-
-  // for (int i = 0; i < size; i++) {
-  //   if(inputs == NULL) break;
-  //   if (strcmp(inputs[i].name, "IX0.1") == 0) {
-  //     if (strcmp(inputs[i].type, "BOOL") == 0) {
-  //       *__IX0_1 = inputs[i].value.bValue;
-  //     } else if (strcmp(inputs[i].type, "INT") == 0) {
-  //       // Example: *__IX0_1_INT = inputs[i].value.intValue;
-  //     }
-  //     // ... handle other types if needed ...
-  //   } else if (strcmp(inputs[i].name, "IX0.0") == 0) {
-  //     if (strcmp(inputs[i].type, "BOOL") == 0) {
-  //       *__IX0_0 = inputs[i].value.bValue;
-  //     } 
-  //     // ... handle other types if needed ...
-  //   }
-  //   // ... add other comparisons for other inputs as needed ...
-  // }
-  //
-  *__IX0_1 = (BOOL)1;
-  *__IX0_0 = (BOOL)0;
+    read_configuration(argv[1]);
+  // *__IX0_1 = (BOOL)1;
+  // *__IX0_0 = (BOOL)0;
 
   printf("Tick %d\n",tick);
   config_run__(tick++);

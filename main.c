@@ -59,21 +59,15 @@ IEC_BOOL __DEBUG;
  * Functions and variables provied by plc.c
  **/ 
 // void run(long int tv_sec, long int tv_nsec);
-void run(PLC_Input inputs[], int size);
+// void run(PLC_Input inputs[], int size);
+void run(int argc,char **argv);
 
-#define maxval(a,b) ((a>b)?a:b)
-
-#define PLC_MAX_INPUT 100
-
-PLC_Input global_inputs[PLC_MAX_INPUT];
-int global_size = PLC_MAX_INPUT;
-
-void timer_notify(sigval_t val)
+void timer_notify(sigval_t val, int argc, char** argv)
 {
     struct timespec CURRENT_TIME;
     clock_gettime(CLOCK_REALTIME, &CURRENT_TIME);
     // run(CURRENT_TIME.tv_sec, CURRENT_TIME.tv_nsec);
-    run(global_inputs, global_size);
+    run(argc, argv);
 }
 
 void terminate_process(int signo) {
@@ -118,7 +112,7 @@ int main(int argc,char **argv)
 
     sigval_t emptySigVal;
     emptySigVal.sival_int = 0;
-    timer_notify(emptySigVal);
+    timer_notify(emptySigVal, argc, argv);
 
     // Wait indefinitely. The program will be terminated by our signal handler once the timer reaches the end of its cycle.
     pause();
