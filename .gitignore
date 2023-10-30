@@ -8,3 +8,6 @@ softplc
 POUS.*
 LOCATED_VARIABLES.h
 VARIABLES.csv
+
+# fuzzing
+outdir/

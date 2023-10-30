@@ -29,6 +29,8 @@
 #include "iec_std_lib.h"
 #include <stdio.h>
 
+#include "inputs.h"
+
 #define __print_BOOL(name) printf("  %s = (BOOL) %s\n",#name, name?"TRUE":"FALSE");
 #define __print_SINT(name) printf("  %s = (SINT) %d\n",#name, name);
 #define __print_INT(name) printf("  %s = (INT) %d\n",#name, name);
@@ -58,7 +60,7 @@ void config_init__(void);
 /*
  *  Functions and variables to export to generated C softPLC
  **/
- 
+
 TIME __CURRENT_TIME;
 
 #define __LOCATED_VAR(type, name, ...) type __##name;
@@ -75,19 +77,38 @@ static int tick = 0;
 
 //extern MY_PROGRAM INST0;
 
-void run(long int tv_sec, long int tv_nsec)
+
+void run(PLC_Input inputs[], int size)
 {
 
 
-    *__IX0_1 = (BOOL)1;
-	*__IX0_0 = (BOOL)1;
-    
-    printf("Tick %d\n",tick);
-    config_run__(tick++);
+  // for (int i = 0; i < size; i++) {
+  //   if(inputs == NULL) break;
+  //   if (strcmp(inputs[i].name, "IX0.1") == 0) {
+  //     if (strcmp(inputs[i].type, "BOOL") == 0) {
+  //       *__IX0_1 = inputs[i].value.bValue;
+  //     } else if (strcmp(inputs[i].type, "INT") == 0) {
+  //       // Example: *__IX0_1_INT = inputs[i].value.intValue;
+  //     }
+  //     // ... handle other types if needed ...
+  //   } else if (strcmp(inputs[i].name, "IX0.0") == 0) {
+  //     if (strcmp(inputs[i].type, "BOOL") == 0) {
+  //       *__IX0_0 = inputs[i].value.bValue;
+  //     } 
+  //     // ... handle other types if needed ...
+  //   }
+  //   // ... add other comparisons for other inputs as needed ...
+  // }
+  //
+  *__IX0_1 = (BOOL)1;
+  *__IX0_0 = (BOOL)0;
 
-    printf("IX0.0 = %s\n", *__IX0_0? "TRUE" : "FALSE");
-    printf("IX0.1 = %s\n", *__IX0_1? "TRUE" : "FALSE");
+  printf("Tick %d\n",tick);
+  config_run__(tick++);
 
-    printf("QX0.0 = %s\n", *__QX0_0? "TRUE" : "FALSE");
+  printf("IX0.0 = %s\n", *__IX0_0? "TRUE" : "FALSE");
+  printf("IX0.1 = %s\n", *__IX0_1? "TRUE" : "FALSE");
+
+  printf("QX0.0 = %s\n", *__QX0_0? "TRUE" : "FALSE");
 
 }

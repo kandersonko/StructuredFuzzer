@@ -1,15 +1,19 @@
 PROGRAM My_Program
   VAR
     button1 AT %IX0.0 : BOOL := TRUE;
-    button2 AT %IX0.1 : BOOL := TRUE;
+    button2 AT %IX0.1 : BOOL := FALSE;
     led AT %QX0.0 : BOOL;
   END_VAR
   VAR
-    LED_STATE : BOOL;
+    LED_ON : BOOL;
   END_VAR
 
-  LED_STATE := AND(button1, button2);
-  led := LED_STATE;
+  LED_ON := AND(button1, button2);
+  IF LED_ON = TRUE THEN
+    led := TRUE;
+  ELSE
+    led := FALSE;
+  END_IF;
 END_PROGRAM
 
 

@@ -1,3 +1,4 @@
+# CC=afl-gcc
 CC=gcc
 #CC=arm-none-eabi-gcc
 STFILE=main.st
