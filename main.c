@@ -76,13 +76,6 @@ void timer_notify(sigval_t val)
     run(global_inputs, global_size);
 }
 
-void catch_signal(int sig)
-{
-  signal(SIGTERM, catch_signal);
-  signal(SIGINT, catch_signal);
-  printf("Got Signal %d\n",sig);
-}
-
 void terminate_process(int signo) {
     exit(0);
 }
