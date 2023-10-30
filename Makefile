@@ -1,5 +1,5 @@
-# CC=afl-gcc
-CC=gcc
+CC=afl-gcc
+# CC=gcc
 #CC=arm-none-eabi-gcc
 STFILE=main.st
 IECGENERATEDSOURCES=STD_CONF.c STD_RESSOURCE.c 
