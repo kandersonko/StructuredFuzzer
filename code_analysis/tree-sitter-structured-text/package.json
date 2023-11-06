@@ -1,0 +1,35 @@
+{
+  "name": "tree-sitter-structured-text",
+  "version": "0.0.1",
+  "description": "IEC 61131-3 Structured Text tree-sitter language parser",
+  "main": "bindings/node",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tree-sitter generate && node-gyp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tmatijevich/tree-sitter-structured-text.git"
+  },
+  "keywords": [
+    "Structured",
+    "Text",
+    "ST",
+    "IEC",
+    "PLC",
+    "Atom",
+    "tree-sitter",
+    "parser",
+    "grammer"
+  ],
+  "author": "Tyler Matijevich",
+  "license": "MIT",
+  "dependencies": {
+    "nan": "^2.14.2"
+  },
+  "devDependencies": {
+    "electron": "^6.1.12",
+    "electron-rebuild": "^2.3.5",
+    "tree-sitter-cli": "^0.19.4"
+  }
+}

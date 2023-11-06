@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "tree-sitter-cli": "^0.20.8"
+  },
+  "name": "plc_code_analysis",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "nan": "^2.18.0"
+  }
+}

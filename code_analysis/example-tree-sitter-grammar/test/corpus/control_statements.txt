@@ -1,0 +1,17 @@
+==============
+Case Statement
+==============
+
+PROGRAM Main
+CASE State OF
+	-1, 0, 1: 
+	2..VAR_1, 9:
+	1_1, 1_2:
+	13, VAR_2, 14:
+		x := 5;
+		x := 6;
+		x := 7;
+	ELSE
+		y := -1;
+END_CASE
+END_PROGRAM

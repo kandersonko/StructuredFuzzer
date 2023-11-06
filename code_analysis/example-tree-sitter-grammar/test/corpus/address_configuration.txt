@@ -1,0 +1,66 @@
+=================
+Address and configuration
+=================
+
+PROGRAM rpi_example
+  VAR
+    PB1 AT %IX0.1 : BOOL;
+    PB2 AT %IX0.2 : BOOL;
+    LED AT %IX0.0 : BOOL;
+  END_VAR
+
+  LED := NOT(PB2) AND (LED OR PB1);
+END_PROGRAM
+
+
+CONFIGURATION Config0
+
+  RESOURCE Res0 ON PLC
+    TASK task0(INTERVAL := T#20ms,PRIORITY := 0);
+    PROGRAM instance0 WITH task0 : rpi_example;
+  END_RESOURCE
+END_CONFIGURATION
+---
+
+(source_file
+      (program_definition
+        programName: (identifier)
+        (variable_definition
+          (variable_definition_body
+            name: (identifier)
+            address: (address)
+            type: (basic_data_type))
+          (variable_definition_body
+            name: (identifier)
+            address: (address)
+            type: (basic_data_type))
+          (variable_definition_body
+            name: (identifier)
+            address: (address)
+            type: (basic_data_type)))
+        (assignment
+          (variable
+            name: (identifier))
+          (binary_expression
+            (unary_expression
+              (parenthesis_expression
+                (variable
+                  name: (identifier))))
+            (parenthesis_expression
+              (binary_expression
+                (variable
+                  name: (identifier))
+                (variable
+                  name: (identifier)))))))
+      (configuration
+        (identifier)
+        (resource
+          (identifier)
+          (task
+            (identifier)
+            (time)
+            (integer))
+          (program_instance
+            (identifier)
+            (identifier)
+            (identifier)))))
