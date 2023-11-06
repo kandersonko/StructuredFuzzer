@@ -11,3 +11,4 @@ VARIABLES.csv
 
 # fuzzing
 outdir/
+*-outdir/
