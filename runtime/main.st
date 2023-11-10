@@ -1,7 +1,7 @@
 PROGRAM My_Program
   VAR
-    button1 AT %IX0.0 : BOOL := TRUE;
-    button2 AT %IX0.1 : BOOL := FALSE;
+    button1 AT %IX0.0 : BOOL;
+    button2 AT %IX0.1 : BOOL;
     led AT %QX0.0 : BOOL;
   END_VAR
   VAR

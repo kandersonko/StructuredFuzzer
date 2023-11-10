@@ -113,7 +113,7 @@ module.exports = grammar({
       ';'
     ),
 
-    address: $ => /%(I|Q)X\d+\.\d+/,
+    address: $ => /%(I|Q)[XBWDL]\d+\.\d+/,
 
     
     _control_statement: $ => choice(

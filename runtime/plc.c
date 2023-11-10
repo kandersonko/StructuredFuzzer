@@ -58,7 +58,6 @@
  **/ 
 void config_run__(int tick);
 void config_init__(void);
-
 /*
  *  Functions and variables to export to generated C softPLC
  **/
@@ -82,108 +81,75 @@ static int tick = 0;
 #define MAX_INPUTS 1000
 #define MAX_LINE_LENGTH 512
 
-void set_plc_input(const char *name, const char *type, PLC_Value value) {
-    if (strcmp(name, "%IX0.0") == 0) {
-        if (strcmp(type, "BOOL") == 0) {
-            *__IX0_0 = (BOOL)value._BOOL;
-        }
-        // Add more type checks if needed
-    } else if (strcmp(name, "%IX0.1") == 0) {
-        if (strcmp(type, "BOOL") == 0) {
-            *__IX0_1 = (BOOL)value._BOOL;
-        }
-        // Add more type checks if needed
-    } else if (strcmp(name, "%IX0.2") == 0) {
-        if (strcmp(type, "BOOL") == 0) {
-            *__IX0_2 = (BOOL)value._BOOL;
-        }
-        // Add more type checks if needed
-    }
-    else {
-      printf("Warning: Unknown PLC input name: %s, %s\n", name,type);
-    }
-    // Add more PLC input name checks if needed
-}
-
-
+extern void set_plc_input(const char *name, const char *type, PLC_Value value); 
 
 void read_configuration(const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (!file) {
-        perror("Error opening configuration file");
-        return;
+  FILE *file = fopen(filename, "r");
+  if (!file) {
+    perror("Error opening configuration file");
+    return;
+  }
+
+  char line[MAX_LINE_LENGTH];
+  while (fgets(line, sizeof(line), file)) {
+    char name[MAX_LINE_LENGTH], type[MAX_LINE_LENGTH];
+    PLC_Value value;
+
+    int parsedItems = sscanf(line, "%[^,],%[^,],", name, type);
+
+    if (parsedItems != 2) {
+      printf("Warning: Malformed line detected: %s\n", line);
+      continue;
     }
 
-    char line[MAX_LINE_LENGTH];
-    while (fgets(line, sizeof(line), file)) {
-        char name[MAX_LINE_LENGTH], type[MAX_LINE_LENGTH];
-        PLC_Value value;
-
-        int parsedItems = sscanf(line, "%[^,],%[^,],", name, type);
-        
-        if (parsedItems != 2) {
-            printf("Warning: Malformed line detected: %s\n", line);
-            continue;
-        }
-
-        if (strcmp(type, "BOOL") == 0) {
-            int boolValue;
-            if (sscanf(line, "%*[^,],%*[^,],%d", &boolValue) != 1 || (boolValue != 0 && boolValue != 1)) {
-                printf("Warning: Invalid BOOL value in line: %s\n", line);
-                continue;
-            }
-            value._BOOL = boolValue;
-        }
-        else if (strcmp(type, "SINT") == 0) {
-            if (sscanf(line, "%*[^,],%*[^,],%d", &(value._SINT)) != 1) {
-                printf("Warning: Invalid SINT value in line: %s\n", line);
-                continue;
-            }
-        }
-        // Add more type-to-value conversions similarly
-
-        // Assign value to PLC variable
-        set_plc_input(name, type, value);
+    if (strcmp(type, "BOOL") == 0) {
+      int boolValue;
+      if (sscanf(line, "%*[^,],%*[^,],%d", &boolValue) != 1 || (boolValue != 0 && boolValue != 1)) {
+        printf("Warning: Invalid BOOL value in line: %s\n", line);
+        continue;
+      }
+      value._BOOL = boolValue;
     }
+    else if (strcmp(type, "SINT") == 0) {
+      if (sscanf(line, "%*[^,],%*[^,],%hhd", &(value._SINT)) != 1) {
+        printf("Warning: Invalid SINT value in line: %s\n", line);
+        continue;
+      }
+    }
+    else if(strcmp(type, "INT") == 0) { 
+      // parse everything else as INT
+      if (sscanf(line, "%*[^,],%*[^,],%hd", &(value._INT)) != 1) {
+        printf("Warning: Invalid INT value in line: %s\n", line);
+        continue;
+      }
+          
+    }
+    // Add more type-to-value conversions similarly
 
-    fclose(file);
+    // Assign value to PLC variable
+    set_plc_input(name, type, value);
+  }
+
+  fclose(file);
 }
 
+// define the external fuzzing harness function like for libfuzzer
+void fuzzer_harness();
 
 void run(int argc, char **argv)
 {
   if (argc != 2) {
-        printf("Usage: %s <configuration file>\n", argv[0]);
-        return;
-    }
+    printf("Usage: %s <configuration file>\n", argv[0]);
+    return;
+  }
 
-    read_configuration(argv[1]);
+  read_configuration(argv[1]);
   // *__IX0_1 = (BOOL)1;
   // *__IX0_0 = (BOOL)0;
 
   printf("Tick %d\n",tick);
   config_run__(tick++);
 
-  printf("IX0.0 = %s\n", *__IX0_0? "TRUE" : "FALSE");
-  printf("IX0.1 = %s\n", *__IX0_1? "TRUE" : "FALSE");
-  printf("IX0.2 = %s\n", *__IX0_2? "TRUE" : "FALSE");
-
-  printf("QX0.0 = %s\n", *__QX0_0? "TRUE" : "FALSE");
-
-  if(*__IX0_0 == 1 )
-  {
-    abort();
-    if(*__IX0_1 == 1)
-    {
-      abort();
-      if(*__IX0_2 == 1){
-        abort();
-      }
-    }
-  }
-  else
-  {
-    printf("Test failed\n");
-  }
+  fuzzer_harness();
 
 }

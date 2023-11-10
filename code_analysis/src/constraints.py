@@ -105,6 +105,10 @@ def convert_ast_expression_to_z3_expression(ast_expression_node, variables):
         z3_expression = convert_to_z3_value(variable_value)
         
 
+    elif ast_expression_node.type == "integer":
+        # set the variable to the integer value
+        variable_value = ast_expression_node.text.decode("utf-8")
+        z3_expression = z3.Int(variable_value)
     else:
         raise Exception("Unknown expression type: %s" % ast_expression_node.type)
 

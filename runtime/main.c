@@ -62,68 +62,6 @@ IEC_BOOL __DEBUG;
 // void run(PLC_Input inputs[], int size);
 void run(int argc,char **argv);
 
-// void timer_notify(sigval_t val, int argc, char** argv)
-// {
-//     struct timespec CURRENT_TIME;
-//     clock_gettime(CLOCK_REALTIME, &CURRENT_TIME);
-//     // run(CURRENT_TIME.tv_sec, CURRENT_TIME.tv_nsec);
-//     run(argc, argv);
-// }
-//
-// void terminate_process(int signo) {
-//     exit(0);
-// }
-//
-// int main(int argc,char **argv)
-// {
-//     timer_t timer;
-//     struct sigevent sigev;
-//     long tv_nsec = common_ticktime__ % 1000000000;
-//     time_t tv_sec =  common_ticktime__ / 1000000000;
-//   
-//  
-//     struct itimerspec timerValues;
-//     
-//     memset (&sigev, 0, sizeof (struct sigevent));
-//     memset (&timerValues, 0, sizeof (struct itimerspec));
-//
-//     // Setting the termination handler
-//     sigev.sigev_value.sival_int = 0;
-//     sigev.sigev_notify = SIGEV_SIGNAL;
-//     sigev.sigev_signo = SIGUSR1;  // Using user-defined signal 1. Ensure no other part of your program uses it.
-//     signal(SIGUSR1, terminate_process);
-//
-//     timerValues.it_value.tv_sec = tv_sec;
-//     timerValues.it_value.tv_nsec = tv_nsec;
-//     // Not setting it_interval because we want the timer to run only once.
-//
-//     printf("common_ticktime__: %d ns\n", common_ticktime__);
-//
-//     printf("\n - timerValues - \n");
-//     printf("interval tv_sec = %ld, tv_nsec = %ld\n", timerValues.it_interval.tv_sec, timerValues.it_interval.tv_nsec); 
-//     printf("config_init__();\n");
-//     config_init__();
-//
-//     int err = timer_create (CLOCK_REALTIME, &sigev, &timer);
-//
-//     if (err < 0) {
-//         printf("Error while creating timer\n");
-//     }
-//     timer_settime (timer, 0, &timerValues, NULL);
-//
-//     sigval_t emptySigVal;
-//     emptySigVal.sival_int = 0;
-//     timer_notify(emptySigVal, argc, argv);
-//
-//     // Wait indefinitely. The program will be terminated by our signal handler once the timer reaches the end of its cycle.
-//     pause();
-//
-//     // This line will never be reached, but it's good practice to cleanup.
-//     timer_delete(timer);
-//     
-//     return 0;
-// }
-
 int main(int argc, char **argv) {
     config_init__();
 

@@ -1,19 +1,15 @@
 PROGRAM My_Program
   VAR
-    button1 AT %IX0.0 : BOOL := FALSE;
-    button2 AT %IX0.1 : BOOL := FALSE;
-    led AT %QX0.0 : BOOL;
-  END_VAR
-  VAR
-    LED_ON : BOOL;
+    sensor1 AT %IW0.0 : INT;
+    actuator AT %QW0.0 : INT;
   END_VAR
 
-  LED_ON := AND(button1, button2);
-  IF LED_ON = TRUE THEN
-    led := TRUE;
+  CASE sensor1 OF
+  10: actuator := 10;
   ELSE
-    led := FALSE;
-  END_IF;
+    actuator := 0;
+  END_CASE;
+    
 END_PROGRAM
 
 

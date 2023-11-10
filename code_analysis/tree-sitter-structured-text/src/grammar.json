@@ -362,7 +362,7 @@
     },
     "address": {
       "type": "PATTERN",
-      "value": "%(I|Q)X\\d+\\.\\d+"
+      "value": "%(I|Q)[XBWDL]\\d+\\.\\d+"
     },
     "_control_statement": {
       "type": "CHOICE",
