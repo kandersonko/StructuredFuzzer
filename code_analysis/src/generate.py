@@ -11,7 +11,7 @@ def generate_plc_input_function(plc_inputs):
     type_mapping = {
         'BOOL': ('BOOL', '_BOOL'),
         'INT': ('INT', '_INT'),
-        # Add more type mappings if needed
+        'REAL': ('REAL', '_REAL'),
     }
     
     # Initialize a list to hold extern variable definitions and input checks

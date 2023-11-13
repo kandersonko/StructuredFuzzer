@@ -32,6 +32,11 @@ def convert_to_z3_operator(ast_operator):
         z3_operator = z3.Not
     elif ast_operator == "XOR":
         z3_operator = z3.Xor
+    elif ast_operator == "=":
+        # use python builtin operator
+        z3_operator = lambda x, y: x == y
+    elif ast_operator == "ABS":
+        z3_operator = abs
     else:
         raise Exception("Unknown operator: %s" % ast_operator)
 
@@ -155,8 +160,8 @@ class ConstraintVisitor(ASTVisitor):
         expression = node.children[2]
         print("variable name: ", variable_name)
         # print("expression: ", expression.text, expression.sexp())
-        z3_expression = convert_ast_expression_to_z3_expression(expression, self.variables)
-        self.constraints.append((variable_name, z3_expression))
+        # z3_expression = convert_ast_expression_to_z3_expression(expression, self.variables)
+        # self.constraints.append((variable_name, z3_expression))
         # print("z3_expression: ", z3_expression)
 
     def solve(self):

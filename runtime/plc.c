@@ -124,7 +124,14 @@ void read_configuration(const char *filename) {
       }
           
     }
-    // Add more type-to-value conversions similarly
+    // for real number
+    else if(strcmp(type, "REAL") == 0) { 
+      if(sscanf(line, "%*[^,],%*[^,],%f", &(value._REAL)) != 1) {
+        printf("Warning: Invalid REAL value in line: %s\n", line);
+        continue;
+      }
+    }
+    
 
     // Assign value to PLC variable
     set_plc_input(name, type, value);

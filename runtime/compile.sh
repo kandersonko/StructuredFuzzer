@@ -25,6 +25,8 @@ export AFL_LLVM_DICT2FILE=~/auto_dictionary
 
 pushd $build_dir
 
+python3 ../code_analysis/src/main.py -f ${STFILE_PATH} 
+
 ./build.sh ${STFILE_PATH} fresh ${OUTFILE_PATH} ${HARNESS_PATH} ${INPUT_PATH}
 
 # move the dictionary to the current directory

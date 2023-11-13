@@ -7,9 +7,6 @@ import matplotlib.pyplot as plt
 argparser = argparse.ArgumentParser()
 argparser.add_argument("-i", "--input_path", help="path to the input file")
 
-# takes the output path as an argument
-argparser.add_argument("-o", "--output_path", help="path to the output file")
-
 args = argparser.parse_args()
 
 def prepare(data_path):
@@ -18,21 +15,20 @@ def prepare(data_path):
     data.rename(columns={"# relative_time": "relative_time"}, inplace=True)
     return data
 
+def plot_speedup(afl_data, our_data, output_path):
+    """The speedup in finding crashes relative to AFL"""
+    speedup = afl_data["saved_crashes"] / our_data["saved_crashes"]
+    plt.figure(figsize=(10, 5))
+    
+    plt.plot(our_data["relative_time"], speedup, label="Speedup")
+    
+    plt.xlabel("Time (s)")
+    plt.ylabel("Speedup")
+    plt.legend()
+    plt.savefig(f"{output_path}_speedup.png")
 
-def main():
-    # set index to column relative_time
-    # data.set_index("relative_time", inplace=True)
-    our_data_path = f"{args.input_path}_our"
-    afl_data_path = f"{args.input_path}_afl"
-    our_data = prepare(our_data_path)
-    afl_data = prepare(afl_data_path)
-    
-    min_len = min(len(our_data), len(afl_data))
-    our_data = our_data[:min_len]
-    afl_data = afl_data[:min_len]
-    
-    # plot the crashes and set the legend and labels
-    # our_data.plot(x="relative_time", y="saved_crashes")
+
+def plot_crashes(afl_data, our_data, output_path):
     plt.figure(figsize=(10, 5))
 
     plt.plot(our_data["relative_time"], our_data["saved_crashes"], label="Our")
@@ -44,7 +40,36 @@ def main():
 
     plt.legend()
     
-    plt.savefig(args.output_path)
+    plt.savefig(f"{output_path}_crashes.png")
+
+
+def main():
+    # set index to column relative_time
+    # data.set_index("relative_time", inplace=True)
+    folders = [f for f in Path(args.input_path).glob("./*")]
+    results = []
+    for folder in folders:
+        paths = folder.glob("*-outdir")
+        
+        our_data = None
+        afl_data = None
+        for data_path in paths:
+            if "our" in data_path.name:
+                our_data = prepare(data_path / "default/plot_data")
+            else:
+                afl_data = prepare(data_path / "default/plot_data")
+                
+
+        min_len = min(len(our_data), len(afl_data))
+        our_data = our_data[:min_len]
+        afl_data = afl_data[:min_len]
+        print("folder:", folder)
+        
+        filename = folder / folder.name
+        print("filename:", filename)
+
+        plot_speedup(afl_data, our_data, filename)
+        plot_crashes(afl_data, our_data, filename)
 
 if __name__ == "__main__":
     
