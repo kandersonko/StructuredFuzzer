@@ -4,4 +4,4 @@ cd tree-sitter-structured-text
 
 tree-sitter generate
 
-gcc -o parser.so -shared src/parser.c -Isrc
+gcc -o parser.so -shared src/parser.c -Isrc -fPIC

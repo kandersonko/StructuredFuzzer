@@ -20,10 +20,6 @@ void fuzzer_harness(void) {
   {
     abort();
   }
-  else if(*__IW0_0 == 30)
-  {
-    abort();
-  }
   else
   {
     printf("Test failed for the inputs\n");
