@@ -1,4 +1,6 @@
 #!/bin/bash
+#
+# source ~/.bashrc
 
 ST_FILE=$1
 

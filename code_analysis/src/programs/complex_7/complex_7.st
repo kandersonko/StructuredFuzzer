@@ -1,49 +1,46 @@
 PROGRAM AutomatedTemperatureControl
 VAR
-    currentTemperature : REAL;       // Current temperature in the reactor (in Celsius)
-    desiredTemperature : REAL := 250.0; // Desired operational temperature (in Celsius)
-    coolingSystemActivated : BOOL;    // State of the cooling system
-    heatingSystemActivated : BOOL;    // State of the heating system
-    alertRaised : BOOL;               // Flag for raising an alert
+    currentTemperature AT %ID0.0 : REAL;        (* Current temperature in the reactor (in Celsius) *)
+    desiredTemperature AT %ID0.1 : REAL;         (* Desired operational temperature (in Celsius) *)
+    coolingSystemActivated AT %QX0.0 : BOOL;    (* State of the cooling system *)
+    heatingSystemActivated AT %QX0.1 : BOOL;    (* State of the heating system *)
+    alertRaised AT %QX0.2 : BOOL;               (* Flag for raising an alert *)
 END_VAR
 
-// Dummy functions for sensor readings and control actions
-PROCEDURE GetCurrentTemperature() : REAL; BEGIN END_PROCEDURE;
-PROCEDURE ActivateCoolingSystem(); BEGIN END_PROCEDURE;
-PROCEDURE DeactivateCoolingSystem(); BEGIN END_PROCEDURE;
-PROCEDURE ActivateHeatingSystem(); BEGIN END_PROCEDURE;
-PROCEDURE DeactivateHeatingSystem(); BEGIN END_PROCEDURE;
-PROCEDURE RaiseAlert(); BEGIN END_PROCEDURE;
-PROCEDURE LowerAlert(); BEGIN END_PROCEDURE;
+VAR
+    temperatureDifference : REAL;               (* Difference between current and desired temperature *)
+END_VAR
 
-// Main logic
-currentTemperature := GetCurrentTemperature();
-
-// Logical Bug: Incorrect arithmetic operations in temperature control logic
-// The system should activate cooling if the temperature exceeds the desired level by more than 10 degrees
-// and heating if it is below the desired level by more than 10 degrees
-IF currentTemperature > (desiredTemperature + 10.0) THEN
-    ActivateCoolingSystem();
+(* Logical Bug: Incorrect arithmetic operations in temperature control logic *)
+(* The system should activate cooling if the temperature exceeds the desired level by more than 10 degrees *)
+(* and heating if it is below the desired level by more than 10 degrees *)
+temperatureDifference := currentTemperature - desiredTemperature;
+IF temperatureDifference > 10.0 THEN
+    (* ActivateCoolingSystem(); *)
     coolingSystemActivated := TRUE;
     heatingSystemActivated := FALSE;
-ELSEIF currentTemperature < (desiredTemperature - 10.0) THEN
-    ActivateHeatingSystem();
-    heatingSystemActivated := TRUE;
-    coolingSystemActivated := FALSE;
 ELSE
-    // Bug: Deactivating both systems when the temperature is within the threshold
-    DeactivateCoolingSystem();
-    DeactivateHeatingSystem();
+    (* Bug: Deactivating both systems when the temperature is within the threshold *)
+    (* DeactivateCoolingSystem(); *)
+    (* DeactivateHeatingSystem(); *)
     coolingSystemActivated := FALSE;
     heatingSystemActivated := FALSE;
-END_IF
+END_IF;
 
-// Raise an alert if temperature deviates significantly from the desired level
+(* Raise an alert if temperature deviates significantly from the desired level *)
 IF ABS(currentTemperature - desiredTemperature) > 20.0 THEN
-    RaiseAlert();
+    (* RaiseAlert(); *)
     alertRaised := TRUE;
 ELSE
-    LowerAlert();
+    (* LowerAlert(); *)
     alertRaised := FALSE;
-END_IF
+END_IF;
 END_PROGRAM
+
+CONFIGURATION STD_CONF
+
+  RESOURCE STD_RESSOURCE ON PLC
+    TASK TaskMain(INTERVAL := T#50ms,PRIORITY := 0);
+    PROGRAM Inst0 WITH TaskMain : AutomatedTemperatureControl;
+  END_RESOURCE
+END_CONFIGURATION

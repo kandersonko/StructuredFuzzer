@@ -178,13 +178,22 @@
 
 static int generate_line_directives__ = 0;
 static int generate_pou_filepairs__   = 0;
+static int generate_plc_state_backup_fuctions__ = 0;
 
 #ifdef __unix__
 /* Parse command line options passed from main.c !! */
-#include <stdlib.h> // for getsybopt()
+#include <stdlib.h> // for getsubopt()
 int  stage4_parse_options(char *options) {
-  enum {                    LINE_OPT = 0            ,  SEPTFILE_OPT              /*, SOME_OTHER_OPT, YET_ANOTHER_OPT */};
-  char *const token[] = { /*[LINE_OPT]=*/(char *)"l",/*SEPTFILE_OPT*/(char *)"p" /*, SOME_OTHER_OPT, ...             */, NULL };
+  enum {LINE_OPT = 0,  
+        SEPTFILE_OPT,
+        BACKUP_OPT    /* option to generate function to backup and restore internal PLC state */
+        /*, SOME_OTHER_OPT, YET_ANOTHER_OPT */};
+  char *const token[] = {
+        /*       LINE_OPT*/(char *)"l",
+        /*   SEPTFILE_OPT*/(char *)"p",
+        /*     BACKUP_OPT*/(char *)"b",
+        /* SOME_OTHER_OPT, ...             */
+        NULL };
   /* unfortunately, the above commented out syntax for array initialization is valid in C, but not in C++ */
   
   char *subopts = options;
@@ -193,8 +202,9 @@ int  stage4_parse_options(char *options) {
 
   while (*subopts != '\0') {
     switch (getsubopt(&subopts, token, &value)) {
-      case     LINE_OPT: generate_line_directives__  = 1; break;
-      case SEPTFILE_OPT: generate_pou_filepairs__    = 1; break;
+      case     LINE_OPT: generate_line_directives__            = 1; break;
+      case SEPTFILE_OPT: generate_pou_filepairs__              = 1; break;
+      case   BACKUP_OPT: generate_plc_state_backup_fuctions__  = 1; break;
       default          : fprintf(stderr, "Unrecognized option: -O %s\n", value); return -1; break;
      }
   }     
@@ -206,6 +216,7 @@ void stage4_print_options(void) {
   printf("          (options must be separated by commas. Example: 'l,w,x')\n"); 
   printf("      l : insert '#line' directives in generated C code.\n"); 
   printf("      p : place each POU in a separate pair of files (<pou_name>.c, <pou_name>.h).\n"); 
+  printf("      b : generate functions to backup and restore internal PLC state.\n"); 
 }
 #else /* not __unix__ */
 /* getsubopt isn't supported with mingw, 
@@ -859,36 +870,55 @@ class generate_c_pous_c {
     
       /* (B.2) Temporary variable for function's return value */
       /* It will have the same name as the function itself! */
-      s4o.print(s4o.indent_spaces);
-      symbol->type_name->accept(print_base); /* return type */
-      s4o.print(" ");
-      symbol->derived_function_name->accept(print_base);
-      s4o.print(" = ");
-      {
-        /* get the default value of this variable's type */
-        symbol_c *default_value = type_initial_value_c::get(symbol->type_name);
-        if (default_value == NULL) ERROR;
-        initialization_analyzer_c initialization_analyzer(default_value);
-        switch (initialization_analyzer.get_initialization_type()) {
-          case initialization_analyzer_c::struct_it:
-            {
-              generate_c_structure_initialization_c *structure_initialization = new generate_c_structure_initialization_c(&s4o);
-              structure_initialization->init_structure_default(symbol->type_name);
-              structure_initialization->init_structure_values(default_value);
-              delete structure_initialization;
-            }
-            break;
-          case initialization_analyzer_c::array_it:
-            {
-              generate_c_array_initialization_c *array_initialization = new generate_c_array_initialization_c(&s4o);
-              array_initialization->init_array_size(symbol->type_name);
-              array_initialization->init_array_values(default_value);
-              delete array_initialization;
-            }
-            break;
-          default:
-            default_value->accept(print_base);
-            break;
+      /* NOTE: matiec supports a non-standard syntax, in which functions do not return a value
+       *       (declared as returning the special non-standard datatype VOID)
+       *       e.g.:   FUNCTION foo: VOID
+       *                ...
+       *               END_FUNCTION
+       *       
+       *       These functions cannot return any value, so they do not need a variable to
+       *       store the return value.
+       *       Note that any attemot to sto a value in the implicit variable
+       *       e.g.:   FUNCTION foo: VOID
+       *                ...
+       *                 foo := 42;
+       *               END_FUNCTION
+       *       will always return a datatype incompatilibiyt error in stage 3 of matiec, 
+       *       so it is safe for stage 4 to assume that this return variable will never be needed
+       *       if the function's return type is VOID.
+       */
+      if (!get_datatype_info_c::is_VOID(symbol->type_name->datatype)) { // only print return variable if return datatype is not VOID
+        s4o.print(s4o.indent_spaces);
+        symbol->type_name->accept(print_base); /* return type */
+        s4o.print(" ");
+        symbol->derived_function_name->accept(print_base);
+        s4o.print(" = ");
+        {
+          /* get the default value of this variable's type */
+          symbol_c *default_value = type_initial_value_c::get(symbol->type_name);
+          if (default_value == NULL) ERROR;
+          initialization_analyzer_c initialization_analyzer(default_value);
+          switch (initialization_analyzer.get_initialization_type()) {
+            case initialization_analyzer_c::struct_it:
+              {
+                generate_c_structure_initialization_c *structure_initialization = new generate_c_structure_initialization_c(&s4o);
+                structure_initialization->init_structure_default(symbol->type_name);
+                structure_initialization->init_structure_values(default_value);
+                delete structure_initialization;
+              }
+              break;
+            case initialization_analyzer_c::array_it:
+              {
+                generate_c_array_initialization_c *array_initialization = new generate_c_array_initialization_c(&s4o);
+                array_initialization->init_array_size(symbol->type_name);
+                array_initialization->init_array_values(default_value);
+                delete array_initialization;
+              }
+              break;
+            default:
+              default_value->accept(print_base);
+              break;
+          }
         }
       }
       s4o.print(";\n\n");
@@ -909,9 +939,11 @@ class generate_c_pous_c {
         s4o.print(s4o.indent_spaces + "*__ENO = __BOOL_LITERAL(FALSE);\n");
         s4o.indent_left();
         s4o.print(s4o.indent_spaces + "}\n");
-        s4o.print(s4o.indent_spaces + "return ");
-        symbol->derived_function_name->accept(print_base);
-        s4o.print(";\n");
+        if (!get_datatype_info_c::is_VOID(symbol->type_name->datatype)) { // only print return variable if return datatype is not VOID
+          s4o.print(s4o.indent_spaces + "return ");
+          symbol->derived_function_name->accept(print_base);
+          s4o.print(";\n");
+        }
         s4o.indent_left();
         s4o.print(s4o.indent_spaces + "}\n");
       }
@@ -930,9 +962,12 @@ class generate_c_pous_c {
       vardecl->print(symbol->var_declarations_list);
       delete vardecl;
       
-      s4o.print(s4o.indent_spaces + "return ");
-      symbol->derived_function_name->accept(print_base);
-      s4o.print(";\n");
+      if (!get_datatype_info_c::is_VOID(symbol->type_name->datatype)) { // only print 'return <fname>' if return datatype is not VOID
+        s4o.print(s4o.indent_spaces + "return ");
+        symbol->derived_function_name->accept(print_base);
+        s4o.print(";\n");
+      }
+
       s4o.indent_left();
       s4o.print(s4o.indent_spaces + "}\n\n\n");
     
@@ -1548,6 +1583,7 @@ void *visit(single_resource_declaration_c *symbol) {
 
 };
 
+
 /***********************************************************************/
 /***********************************************************************/
 /***********************************************************************/
@@ -1570,10 +1606,9 @@ class generate_c_resources_c: public generate_c_base_and_typeid_c {
     symbol_c *current_task_name;
     symbol_c *current_global_vars;
     bool configuration_name;
-    stage4out_c *s4o_ptr;
 
   public:
-    generate_c_resources_c(stage4out_c *s4o_ptr, symbol_c *config_scope, symbol_c *resource_scope, unsigned long time)
+    generate_c_resources_c(stage4out_c *s4o_ptr, symbol_c *config_scope, symbol_c *resource_scope, unsigned long long time)
       : generate_c_base_and_typeid_c(s4o_ptr) {
       current_configuration = config_scope;
       search_config_instance   = new search_var_instance_decl_c(config_scope);
@@ -1583,7 +1618,6 @@ class generate_c_resources_c: public generate_c_base_and_typeid_c {
       current_task_name = NULL;
       current_global_vars = NULL;
       configuration_name = false;
-      generate_c_resources_c::s4o_ptr = s4o_ptr;
     };
 
     virtual ~generate_c_resources_c(void) {
@@ -1650,8 +1684,8 @@ class generate_c_resources_c: public generate_c_base_and_typeid_c {
     /********************/
     /* 2.1.6 - Pragmas  */
     /********************/
-    void *visit(enable_code_generation_pragma_c * symbol)   {s4o_ptr->enable_output();  return NULL;}
-    void *visit(disable_code_generation_pragma_c * symbol)  {s4o_ptr->disable_output(); return NULL;} 
+    void *visit(enable_code_generation_pragma_c * symbol)   {s4o.enable_output();  return NULL;}
+    void *visit(disable_code_generation_pragma_c * symbol)  {s4o.disable_output(); return NULL;} 
     
 
     /******************************************/
@@ -2086,6 +2120,261 @@ END_RESOURCE
 /***********************************************************************/
 /***********************************************************************/
 
+/*******************************************************/
+/* Classes to generate the backup/restore functions... */
+/*******************************************************/
+
+#define RESTORE_  "_restore__"
+#define BACKUP_   "_backup__"
+
+/* class to generate the forward declaration of the XXXX_backup() and XXXX_restore()
+ * functions that will later (in the generated C source code) be defined 
+ * to backup/restore the global state of each RESOURCE in the source code being compiled.
+ * The XXXX is actually the resource name!
+ */
+class generate_c_backup_resource_decl_c: public generate_c_base_and_typeid_c {
+  public:
+    generate_c_backup_resource_decl_c(stage4out_c *s4o_ptr)
+      : generate_c_base_and_typeid_c(s4o_ptr) {};
+      
+    void *visit(resource_declaration_c *symbol) {
+      s4o.print(s4o.indent_spaces);
+      s4o.print("void ");
+      symbol->resource_name->accept(*this);
+      s4o.print("_backup__" "(void **buffer, int *maxsize);\n");      
+      s4o.print(s4o.indent_spaces);
+      s4o.print("void ");
+      symbol->resource_name->accept(*this);
+      s4o.print("_restore__" "(void **buffer, int *maxsize);\n");      
+      return NULL;
+    }
+};
+
+
+/* print out the begining of the generic backup/restore function */
+void print_backup_restore_function_beg(stage4out_c &s4o, const char *func_name, const char *operation) {
+  /* operation will be either "_backup__" or "_restore__" */
+  s4o.print("\n");
+  s4o.print("void ");
+  s4o.print(func_name);
+  s4o.print(operation);
+  s4o.print("(void **buffer, int *maxsize) {\n");
+  s4o.indent_right();
+  // Don't save/restore the __CURRENT_TIME variable, as 'plc controller' has easy access to it
+  // and can therefore do the save/restore by itself.
+//s4o.print(s4o.indent_spaces); 
+//s4o.print(operation);
+//s4o.print("(&__CURRENT_TIME, sizeof(__CURRENT_TIME), buffer, maxsize);\n");
+  s4o.print(s4o.indent_spaces);
+  s4o.print("#define " DECLARE_GLOBAL          "(vartype, domain, varname) \\\n    ");
+  s4o.print(operation);
+  s4o.print("(&domain##__##varname, sizeof(domain##__##varname), buffer, maxsize);\n");
+  s4o.print(s4o.indent_spaces);
+  s4o.print("#define " DECLARE_GLOBAL_FB       "(vartype, domain, varname) \\\n    ");
+  s4o.print(operation);
+  s4o.print("(&domain##__##varname, sizeof(domain##__##varname), buffer, maxsize);\n");
+  s4o.print(s4o.indent_spaces);
+  s4o.print("#define " DECLARE_GLOBAL_LOCATION "(vartype, location) \\\n    ");
+  s4o.print(operation);
+  s4o.print("(location, sizeof(*location), buffer, maxsize);\n");
+  s4o.print(s4o.indent_spaces);
+  s4o.print("#define " DECLARE_GLOBAL_LOCATED  "(vartype, domain, varname) \\\n    ");
+  s4o.print(operation);
+  s4o.print("(&domain##__##varname, sizeof(domain##__##varname), buffer, maxsize);\n");
+}
+
+/* print out the ending of the generic backup/restore function */
+void print_backup_restore_function_end(stage4out_c &s4o) {
+  s4o.print(s4o.indent_spaces); s4o.print("#undef " DECLARE_GLOBAL          "\n");
+  s4o.print(s4o.indent_spaces); s4o.print("#undef " DECLARE_GLOBAL_FB       "\n");
+  s4o.print(s4o.indent_spaces); s4o.print("#undef " DECLARE_GLOBAL_LOCATION "\n");
+  s4o.print(s4o.indent_spaces); s4o.print("#undef " DECLARE_GLOBAL_LOCATED  "\n");
+  s4o.indent_left();
+  s4o.print("}\n");      
+}
+
+
+/* generate the backup/restore function for a CONFIGURATION */
+/* the generated function will backup/restore the global variables declared in the
+ * configuration, and call the backup/restore functions of each embedded resource to do
+ * the same for the global variables declared inside each resource.
+ */
+class generate_c_backup_config_c: public generate_c_base_and_typeid_c {
+  private:
+    const char *func_to_call = NULL; // will later be set to either "_backup__" or "_restore__"
+
+  public:
+    generate_c_backup_config_c(stage4out_c *s4o_ptr)
+      : generate_c_base_and_typeid_c(s4o_ptr) {
+    };
+
+    virtual ~generate_c_backup_config_c(void) {}
+
+    
+  public:
+    /********************/
+    /* 2.1.6 - Pragmas  */
+    /********************/
+    void *visit(enable_code_generation_pragma_c * symbol)   {s4o.enable_output(); return NULL;}
+    void *visit(disable_code_generation_pragma_c * symbol)  {s4o.disable_output();return NULL;}
+        
+        
+    /********************************/
+    /* B 1.7 Configuration elements */
+    /********************************/
+    /*
+    SYM_REF6(configuration_declaration_c, configuration_name, global_var_declarations, resource_declarations, access_declarations, instance_specific_initializations, unused)
+    */
+    void *visit(configuration_declaration_c *symbol) {
+      
+      s4o.print("\n\n\n");
+      
+      s4o.print("void ");
+      s4o.print("_backup__");
+      s4o.print("(void *varptr, int varsize, void **buffer, int *maxsize) {\n");
+      s4o.print("  if (varsize <= *maxsize) {memmove(*buffer, varptr, varsize); *buffer += varsize;}\n");
+      s4o.print("  *maxsize -= varsize;\n");
+      s4o.print("}\n");
+      
+      s4o.print("void ");
+      s4o.print("_restore__");
+      s4o.print("(void *varptr, int varsize, void **buffer, int *maxsize) {\n");
+      s4o.print("  if (varsize <= *maxsize) {memmove(varptr, *buffer, varsize); *buffer += varsize;}\n");
+      s4o.print("  *maxsize -= varsize;\n");
+      s4o.print("}\n");
+      
+      
+      generate_c_vardecl_c vardecl = generate_c_vardecl_c(&s4o,
+                                         generate_c_vardecl_c::local_vf,
+                                         generate_c_vardecl_c::global_vt,
+                                         symbol->configuration_name);
+
+      s4o.print("\n\n\n");
+      s4o.print("#undef " DECLARE_GLOBAL          "\n");
+      s4o.print("#undef " DECLARE_GLOBAL_FB       "\n");
+      s4o.print("#undef " DECLARE_GLOBAL_LOCATION "\n");
+      s4o.print("#undef " DECLARE_GLOBAL_LOCATED  "\n");
+      
+      generate_c_backup_resource_decl_c declare_functions = generate_c_backup_resource_decl_c(&s4o);
+      symbol->resource_declarations->accept(declare_functions);
+      
+      print_backup_restore_function_beg(s4o, "config", "_backup__");
+      vardecl.print(symbol);
+      s4o.print("\n");
+      func_to_call = "_backup__";
+      symbol->resource_declarations->accept(*this);
+      func_to_call = NULL;
+      print_backup_restore_function_end(s4o);      
+    
+      print_backup_restore_function_beg(s4o, "config", "_restore__");
+      vardecl.print(symbol);
+      s4o.print("\n");
+      func_to_call = "_restore__";
+      symbol->resource_declarations->accept(*this);
+      func_to_call = NULL;
+      print_backup_restore_function_end(s4o);      
+      
+      return NULL;
+    }
+    
+    void *visit(resource_declaration_c *symbol) {
+      if (symbol->global_var_declarations == NULL)
+        return NULL;
+      s4o.print(s4o.indent_spaces);
+      symbol->resource_name->accept(*this);
+      s4o.print(func_to_call);
+      s4o.print("(buffer, maxsize);\n");      
+      return NULL;
+    }
+    
+    void *visit(single_resource_declaration_c *symbol) {
+      /* A single resource never has global variables declared, so nothing to do! */
+      return NULL;
+    }
+
+};
+
+
+
+/* generate the backup/restore function for a RESOURCE */
+/* the backup/restore function generated here will be called by the backup/restore
+ * function generated for the configuration in which the resource is embedded
+ */
+class generate_c_backup_resource_c: public generate_c_base_and_typeid_c {
+  public:
+    generate_c_backup_resource_c(stage4out_c *s4o_ptr)
+      : generate_c_base_and_typeid_c(s4o_ptr) {
+    };
+
+    virtual ~generate_c_backup_resource_c(void) {}
+
+    
+  public:
+    /********************/
+    /* 2.1.6 - Pragmas  */
+    /********************/
+    void *visit(enable_code_generation_pragma_c * symbol)   {s4o.enable_output(); return NULL;}
+    void *visit(disable_code_generation_pragma_c * symbol)  {s4o.disable_output();return NULL;}
+        
+        
+    /********************************/
+    /* B 1.7 Configuration elements */
+    /********************************/
+    void *visit(resource_declaration_c *symbol) {
+      if (symbol->global_var_declarations == NULL)
+        return NULL;
+
+      char *resource_name = strdup(symbol->resource_name->token->value);
+      /* convert to upper case */
+      for (char *c = resource_name; *c != '\0'; *c = toupper(*c), c++);
+      
+      generate_c_vardecl_c vardecl = generate_c_vardecl_c(&s4o,
+                                         generate_c_vardecl_c::local_vf,
+                                         generate_c_vardecl_c::global_vt,
+                                         symbol->resource_name);
+      s4o.print("\n\n\n");
+
+      s4o.print("void ");
+      s4o.print("_backup__");
+      s4o.print("(void *varptr, int varsize, void **buffer, int *maxsize);\n");
+      s4o.print("void ");
+      s4o.print("_restore__");
+      s4o.print("(void *varptr, int varsize, void **buffer, int *maxsize);\n");
+
+      s4o.print("\n\n\n");
+      s4o.print("#undef " DECLARE_GLOBAL          "\n");
+      s4o.print("#undef " DECLARE_GLOBAL_FB       "\n");
+      s4o.print("#undef " DECLARE_GLOBAL_LOCATION "\n");
+      s4o.print("#undef " DECLARE_GLOBAL_LOCATED  "\n");
+      
+      print_backup_restore_function_beg(s4o, resource_name, "_backup__");
+      vardecl.print(symbol->global_var_declarations);
+      print_backup_restore_function_end(s4o);      
+    
+      print_backup_restore_function_beg(s4o, resource_name, "_restore__");
+      vardecl.print(symbol->global_var_declarations);
+      print_backup_restore_function_end(s4o);      
+    
+      return NULL;
+    }
+    
+    void *visit(single_resource_declaration_c *symbol) {
+      /* A single resource never has global variables declared, so nothing to do! */
+      return NULL;
+    }
+
+};
+
+
+/***********************************************************************/
+/***********************************************************************/
+/***********************************************************************/
+/***********************************************************************/
+/***********************************************************************/
+/***********************************************************************/
+/***********************************************************************/
+/***********************************************************************/
+
 class generate_c_c: public iterator_visitor_c {
   protected:
     stage4out_c                      &s4o;
@@ -2167,7 +2456,7 @@ class generate_c_c: public iterator_visitor_c {
       pous_incl_s4o.print("#include \"accessor.h\"\n#include \"iec_std_lib.h\"\n\n");
 
       for(int i = 0; i < symbol->n; i++) {
-        symbol->elements[i]->accept(*this);
+        symbol->get_element(i)->accept(*this);
       }
 
       pous_incl_s4o.print("#endif //__POUS_H\n");
@@ -2205,8 +2494,8 @@ class generate_c_c: public iterator_visitor_c {
     /* helper symbol for data_type_declaration */
     void *visit(type_declaration_list_c *symbol) {
       for(int i = 0; i < symbol->n; i++) {
-        symbol->elements[i]->accept(generate_c_implicit_typedecl);
-        symbol->elements[i]->accept(generate_c_typedecl);
+        symbol->get_element(i)->accept(generate_c_implicit_typedecl);
+        symbol->get_element(i)->accept(generate_c_typedecl);
       }
       return NULL;
     }
@@ -2304,9 +2593,14 @@ class generate_c_c: public iterator_visitor_c {
         config_s4o.print("unsigned long long common_ticktime__ = ");
         config_s4o.print_long_long_integer(common_ticktime);
         config_s4o.print("; /*ns*/\n");
-        config_s4o.print("unsigned long greatest_tick_count__ = ");
+        config_s4o.print("unsigned long greatest_tick_count__ = (unsigned long)");
         config_s4o.print_long_integer(calculate_common_ticktime.get_greatest_tick_count());
         config_s4o.print("; /*tick*/\n");
+
+        if (generate_plc_state_backup_fuctions__ > 0) {
+          generate_c_backup_config_c generate_backup = generate_c_backup_config_c(&config_s4o);
+          symbol->accept(generate_backup);
+        }
       }
 
       symbol->resource_declarations->accept(*this);
@@ -2322,6 +2616,10 @@ class generate_c_c: public iterator_visitor_c {
       stage4out_c resources_s4o(current_builddir, current_name, "c");
       generate_c_resources_c generate_c_resources(&resources_s4o, current_configuration, symbol, common_ticktime);
       symbol->accept(generate_c_resources);
+      if (generate_plc_state_backup_fuctions__ > 0) {
+        generate_c_backup_resource_c generate_backup = generate_c_backup_resource_c(&resources_s4o);
+        symbol->accept(generate_backup);
+      }
       return NULL;
     }
 

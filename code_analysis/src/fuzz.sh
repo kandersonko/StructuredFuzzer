@@ -13,6 +13,7 @@ duration=$3
 cd $folder
 
 python ../../main.py -f $program
+
 $COMPILER $program ./harness.c
 
 cp harness our-softplc
@@ -25,7 +26,7 @@ echo "00" > afl-indir/testcase
 
 rm -rf our-outdir afl-outdir
 
-screen -dmS "${program}-afl" bash -c "timeout $duration afl-fuzz -i our-indir -o our-outdir -x inputs.dict -- ./our-softplc @@" 
+screen -dmS "${program}-afl" bash -c "timeout $duration ~/tools/afl-fuzz.sh -i our-indir -o our-outdir -x inputs.dict -- ./our-softplc @@"
 
 
-screen -dmS "${program}-our" bash -c "timeout $duration afl-fuzz -i afl-indir -o afl-outdir -x inputs.dict -- ./afl-softplc @@"
+screen -dmS "${program}-our" bash -c "timeout $duration ~/tools/afl-fuzz.sh -i afl-indir -o afl-outdir -x inputs.dict -- ./afl-softplc @@"

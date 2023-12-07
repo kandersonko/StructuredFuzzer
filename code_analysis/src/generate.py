@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 def generate_plc_input_function(plc_inputs):
     """
@@ -38,7 +39,6 @@ def generate_plc_input_function(plc_inputs):
         if (strcmp(type, "{input_type}") == 0) {{
             *{pointer_name} = ({cast_type})value.{union_member};
         }}
-        // Add more type checks if needed
     }} else"""
         input_checks.append(input_check)
     
@@ -51,7 +51,7 @@ def generate_plc_input_function(plc_inputs):
     input_checks_str = '\n'.join(input_checks)
 
     # get inputs.h path, should home path followed by plc_runtime_fuzzer/runtime/inputs.h
-    input_h_path = os.path.join(os.environ['HOME'], '/nethome/koffi/projects/plc_runtime_fuzzer/runtime/inputs.h')
+    input_h_path = Path().home() / "projects/plc_runtime_fuzzer/runtime/inputs.h"
 
     input_headers = f"""
 #include "iec_std_lib.h"

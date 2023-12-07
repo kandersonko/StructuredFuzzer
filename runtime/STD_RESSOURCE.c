@@ -17,7 +17,7 @@ extern unsigned long long common_ticktime__;
 #include "POUS.c"
 
 BOOL TASKMAIN;
-MY_PROGRAM STD_RESSOURCE__INST0;
+SAFETYCRITICALOPERATION STD_RESSOURCE__INST0;
 #define INST0 STD_RESSOURCE__INST0
 
 void STD_RESSOURCE_init__(void) {
@@ -25,13 +25,13 @@ void STD_RESSOURCE_init__(void) {
   retain = 0;
   
   TASKMAIN = __BOOL_LITERAL(FALSE);
-  MY_PROGRAM_init__(&INST0,retain);
+  SAFETYCRITICALOPERATION_init__(&INST0,retain);
 }
 
 void STD_RESSOURCE_run__(unsigned long tick) {
   TASKMAIN = !(tick % 1);
   if (TASKMAIN) {
-    MY_PROGRAM_body__(&INST0);
+    SAFETYCRITICALOPERATION_body__(&INST0);
   }
 }
 

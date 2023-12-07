@@ -1,41 +1,40 @@
 PROGRAM AutomatedTrafficControl
 VAR
-    currentTime : INT;              // Current time in hours (24-hour format)
-    trafficCondition : INT;         // Traffic condition (1 for low, 2 for moderate, 3 for high)
-    trafficLightState : STRING;     // State of the traffic lights ("Red", "Green", "Yellow")
+    currentTime AT %IW0.0 : INT;        (* Current time in hours (24-hour format) *)
+    trafficCondition AT %IW0.1 : INT;   (* Traffic condition (1 for low, 2 for moderate, 3 for high) *)
+    trafficLightState AT %QW0.0 : INT;     (* State of the traffic lights (0 for Red", 1 for Green, 2 for Yellow) *)
 END_VAR
 
-// Dummy functions for simulation
-PROCEDURE GetCurrentTime() : INT; BEGIN END_PROCEDURE;
-PROCEDURE GetTrafficCondition() : INT; BEGIN END_PROCEDURE;
-PROCEDURE SetTrafficLightState(state : STRING); BEGIN END_PROCEDURE;
-
-// Main logic
-currentTime := GetCurrentTime();
-trafficCondition := GetTrafficCondition();
-
-// Logical Bug: Incorrect handling of traffic light states in case statement
+(* Logical Bug: Incorrect handling of traffic light states in case statement *)
 CASE currentTime OF
-    0..5: // Late night
-        trafficLightState := 'Yellow';
-    6..9: // Morning rush hour
+    0..5: (* Late night *)
+        trafficLightState := 2; (* Yellow *)
+    6..9: (* Morning rush hour *)
         IF trafficCondition = 3 THEN
-            trafficLightState := 'Green';
+            trafficLightState := 1; (* Green *)
         ELSE
-            trafficLightState := 'Red';
-        END_IF
-    10..15: // Day time
-        trafficLightState := 'Green';
-    16..19: // Evening rush hour
-        // Bug: Red light during high traffic in the evening rush hour
+            trafficLightState := 0; (* Red *)
+        END_IF;
+    10..15: (* Day time *)
+        trafficLightState := 1; (* Green *)
+    16..19: (* Evening rush hour *)
+        (* Bug: Red light during high traffic in the evening rush hour *)
         IF trafficCondition = 3 THEN
-            trafficLightState := 'Red';
+            trafficLightState := 0; (* Red *)
         ELSE
-            trafficLightState := 'Green';
-        END_IF
-    20..23: // Night
-        trafficLightState := 'Yellow';
-END_CASE
+            trafficLightState := 1; (* Green *)
+        END_IF;
+    20..23: (* Night *)
+        trafficLightState := 2; (* Yellow *)
+END_CASE;
 
-SetTrafficLightState(trafficLightState);
+(* SetTrafficLightState(trafficLightState); *)
 END_PROGRAM
+
+CONFIGURATION STD_CONF
+
+  RESOURCE STD_RESSOURCE ON PLC
+    TASK TaskMain(INTERVAL := T#50ms,PRIORITY := 0);
+    PROGRAM Inst0 WITH TaskMain : AutomatedTrafficControl;
+  END_RESOURCE
+END_CONFIGURATION

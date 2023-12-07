@@ -1,7 +1,12 @@
 #!/bin/bash
 
+# clone matiec compiler
+git clone https://github.com/nucleron/matiec
+
 # compile matiec compiler
 cd matiec/
+
+autoreconf -i
 
 ./configure; make
 

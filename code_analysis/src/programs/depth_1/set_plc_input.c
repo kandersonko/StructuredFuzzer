@@ -2,7 +2,7 @@
 #include "iec_types_all.h" 
 #include <string.h>
 #include <stdlib.h>
-#include "/nethome/koffi/projects/plc_runtime_fuzzer/runtime/inputs.h"
+#include "/mnt/ceph/koff9454/projects/plc_runtime_fuzzer/runtime/inputs.h"
 
     
 extern BOOL *__IX0_0;
