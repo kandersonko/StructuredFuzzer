@@ -6,7 +6,7 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=2
 #SBATCH -p reg
-#SBATCH --array=0
+#SBATCH --array=0-1
 #SBATCH --output=jobs/fuzz_%A_%a.stdout
 #SBATCH --error=jobs/fuzz_%A_%a.stderr
 
@@ -42,11 +42,14 @@ duration=$((60 * 60 * 4))
 # Get the list of programs to fuzz in the `programs` directory as bash array
 programs=($(ls programs))
 
-# fuzz the program at the index of the array task id
-program=${programs[$SLURM_ARRAY_TASK_ID]}
-echo "Fuzzing program: $program"
+# Calculate the program index and run ID based on SLURM_ARRAY_TASK_ID
+program_index=$(($SLURM_ARRAY_TASK_ID / 10))
+run_id=$(($SLURM_ARRAY_TASK_ID % 10))
 
+# Select the program based on the calculated index
+program=${programs[$program_index]}
+echo "Fuzzing program: $program, Run ID: $run_id"
 
-srun ./fuzz.sh programs/${program} ${program}.st ${duration} $SLURM_ARRAY_TASK_ID 
+srun ./fuzz.sh programs/${program} ${program}.st ${duration} $run_id
 
 wait

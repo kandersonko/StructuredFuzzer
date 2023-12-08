@@ -5,7 +5,6 @@ HARNESS=$2
 
 current_dir=$(pwd)
 
-
 STFILE_PATH=$(realpath $STFILE)
 HARNESS_PATH=$(realpath $HARNESS)
 
@@ -13,25 +12,34 @@ HARNESS_PATH=$(realpath $HARNESS)
 OUTFILE=$(basename $HARNESS .c)
 
 # the path to the output file is the same as the path to the harness
-OUTFILE_PATH=$(dirname `realpath $HARNESS`)/$OUTFILE
+OUTFILE_DIR=$(dirname $HARNESS_PATH)
+OUTFILE_PATH=$OUTFILE_DIR/$OUTFILE
 
 # input file
-INPUT_PATH=$(dirname `realpath $HARNESS`)/set_plc_input.c
+INPUT_PATH=$OUTFILE_DIR/set_plc_input.c
 
-# use pushd to change directory to the directory of the script
+# The directory where the build.sh script is located
 build_dir=~/projects/plc_runtime_fuzzer/runtime/
 
-export AFL_LLVM_DICT2FILE=~/auto_dictionary
+# export AFL_LLVM_DICT2FILE=~/auto_dictionary
+# Set AFL_LLVM_DICT2FILE to the output directory of the compiled program
+export AFL_LLVM_DICT2FILE="$OUTFILE_DIR/inputs.dict"
 
+# Change directory to the directory of the build script
 pushd $build_dir
 
-python3 ../code_analysis/src/main.py -f ${STFILE_PATH} 
-
+# Run the build script
+python3 ../code_analysis/src/main.py -f ${STFILE_PATH}
 ./build.sh ${STFILE_PATH} fresh ${OUTFILE_PATH} ${HARNESS_PATH} ${INPUT_PATH}
 
-# move the dictionary to the current directory
-popd 
+# Return to the original directory
+popd
 
-echo `pwd`
+echo "Current directory: $(pwd)"
 
-mv ~/auto_dictionary inputs.dict
+# Move the dictionary and the executable to the current directory
+# mv $build_dir/$AFL_LLVM_DICT2FILE inputs.dict
+# mv $OUTFILE_PATH .
+
+echo "Files moved to $(pwd)"
+

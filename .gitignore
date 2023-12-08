@@ -19,5 +19,7 @@ matiec/
 
 # ignore jobs logs
 jobs/
-
 runs/
+
+# temp folder
+tmp.*/
