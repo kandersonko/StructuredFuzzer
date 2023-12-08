@@ -28,7 +28,7 @@ ELSE
 END_IF;
 
 (* Raise an alert if temperature deviates significantly from the desired level *)
-IF ABS(currentTemperature - desiredTemperature) > 20.0 THEN
+IF ABS_REAL(currentTemperature - desiredTemperature) > 20.0 THEN
     (* RaiseAlert(); *)
     alertRaised := TRUE;
 ELSE

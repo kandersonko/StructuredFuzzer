@@ -12,6 +12,7 @@ VARIABLES.csv
 # fuzzing
 outdir/
 *-outdir/
+*-indir/
 
 # ignore matiec folder
 matiec/

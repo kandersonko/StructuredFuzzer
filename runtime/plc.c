@@ -27,6 +27,7 @@
  */
 
 #include "iec_std_lib.h"
+#include "iec_std_functions.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -79,7 +80,7 @@ static int tick = 0;
 //extern MY_PROGRAM INST0;
 
 #define MAX_INPUTS 1000
-#define MAX_LINE_LENGTH 512
+#define MAX_LINE_LENGTH 1000
 
 extern void set_plc_input(const char *name, const char *type, PLC_Value value); 
 
@@ -125,11 +126,15 @@ void read_configuration(const char *filename) {
           
     }
     // for real number
-    else if(strcmp(type, "REAL") == 0) { 
+    else if(strcmp(type, "REAL") == 0) {
       if(sscanf(line, "%*[^,],%*[^,],%f", &(value._REAL)) != 1) {
         printf("Warning: Invalid REAL value in line: %s\n", line);
         continue;
       }
+    }
+    else {
+      printf("warning: Unknown type: %s\n", type);
+      continue;
     }
     
 

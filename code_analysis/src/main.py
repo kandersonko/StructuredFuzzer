@@ -56,10 +56,10 @@ if __name__ == '__main__':
         variable_address = variable_value[1]
         # store only the input variables with an address
         if variable_address and "%I" in variable_address:
-            content = f"{variable_address},{variable_type},0\n"
+            content = f"{variable_address},{variable_type},9\n"
             # save the variable in a file, append the variable if the file exists
             print("content: ", content)
-            plc_inputs.append({"name": variable_address, "type": variable_type, "value": 0})
+            plc_inputs.append({"name": variable_address, "type": variable_type, "value": 9})
             with open(filename, "a") as f:
                 f.write(content)
 

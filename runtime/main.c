@@ -43,6 +43,7 @@
 
 #include "iec_types.h"
 #include "iec_std_lib.h"
+#include "iec_std_functions.h"
 
 #include "inputs.h"
 
