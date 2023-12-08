@@ -35,6 +35,7 @@ build() {
     fi
 
     # Generate IEC sources from ST file
+    echo "Generating IEC sources from ST file"
     iec2c $STFILE -I $MATIEC_INCLUDE_PATH
 
     # Compile the sources
@@ -44,11 +45,14 @@ build() {
     done
     
     # compile the fuzzing harness
+    echo "Compiling the fuzzing harness"
     $CC $CFLAGS $HARNESS -o harness.o 
     
+    echo "Compiling the set_input"
     $CC $CFLAGS $SET_INPUT -o SET_INPUT.o 
 
     # Link the object files with the fuzzing harness
+    echo "Creating the executable"
     $CC $OBJECTS harness.o SET_INPUT.o -o $EXECUTABLE $LDFLAGS
     
     # $CC $OBJECTS -o $EXECUTABLE $LDFLAGS

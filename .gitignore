@@ -16,3 +16,6 @@ outdir/
 
 # ignore matiec folder
 matiec/
+
+# ignore jobs logs
+jobs/

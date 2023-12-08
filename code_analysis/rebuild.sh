@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# install tree-sitter-cli
+# cargo install tree-sitter-cli
+
 cd tree-sitter-structured-text
 
 tree-sitter generate
