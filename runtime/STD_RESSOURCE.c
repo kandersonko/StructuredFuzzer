@@ -17,7 +17,7 @@ extern unsigned long long common_ticktime__;
 #include "POUS.c"
 
 BOOL TASKMAIN;
-AUTOMATEDREACTORCONTROL STD_RESSOURCE__INST0;
+COMPLEXMANUFACTURINGPROCESS STD_RESSOURCE__INST0;
 #define INST0 STD_RESSOURCE__INST0
 
 void STD_RESSOURCE_init__(void) {
@@ -25,13 +25,13 @@ void STD_RESSOURCE_init__(void) {
   retain = 0;
   
   TASKMAIN = __BOOL_LITERAL(FALSE);
-  AUTOMATEDREACTORCONTROL_init__(&INST0,retain);
+  COMPLEXMANUFACTURINGPROCESS_init__(&INST0,retain);
 }
 
 void STD_RESSOURCE_run__(unsigned long tick) {
   TASKMAIN = !(tick % 1);
   if (TASKMAIN) {
-    AUTOMATEDREACTORCONTROL_body__(&INST0);
+    COMPLEXMANUFACTURINGPROCESS_body__(&INST0);
   }
 }
 

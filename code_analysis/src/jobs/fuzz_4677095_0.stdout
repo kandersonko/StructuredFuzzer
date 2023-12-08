@@ -1,0 +1,203 @@
+JOB timestamp: Fri Dec  8 07:14:24 PST 2023
+JOB ID: 4677096
+Array Task ID: 0
+n073.fortytwo.ibest.uidaho.edu
+# conda environments:
+#
+base                     /mnt/ceph/koff9454/miniconda3
+aml                      /mnt/ceph/koff9454/miniconda3/envs/aml
+angr                     /mnt/ceph/koff9454/miniconda3/envs/angr
+fuzzing                  /mnt/ceph/koff9454/miniconda3/envs/fuzzing
+plc                   *  /mnt/ceph/koff9454/miniconda3/envs/plc
+pytorch                  /mnt/ceph/koff9454/miniconda3/envs/pytorch
+torch                    /mnt/ceph/koff9454/miniconda3/envs/torch
+usb                      /mnt/ceph/koff9454/miniconda3/envs/usb
+
+gcc (GCC) 11.3.0
+Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Python 3.11.5
+/mnt/ceph/koff9454/miniconda3/envs/plc/bin/python
+Fuzzing program: complex_1
+(source_file (program_definition program_name: (identifier) (variable_definition (variable_definition_body name: (identifier) address: (address) type: (basic_data_type) value: (integer)) (block_comment) (variable_definition_body name: (identifier) address: (address) type: (basic_data_type) value: (integer)) (block_comment) (variable_definition_body name: (identifier) address: (address) type: (basic_data_type)) (block_comment)) (block_comment) (block_comment) (if_statement condition: (binary_expression (variable name: (identifier)) (variable name: (identifier))) (assignment (variable name: (identifier)) (boolean)) (block_comment) (else_clause (assignment (variable name: (identifier)) (boolean))) (block_comment))) (configuration (identifier) (resource (identifier) (task (identifier) (time) (integer)) (program_instance (identifier) (identifier) (identifier)))))
+variable_name:  sensorValue
+variable_type:  INT
+variable_address:  %IW0.0
+
+variable_name:  safeThreshold
+variable_type:  INT
+variable_address:  %QW0.0
+
+variable_name:  emergencyStop
+variable_type:  BOOL
+variable_address:  %QX0.1
+
+visit_assignment:  (assignment (variable name: (identifier)) (boolean))
+
+variable name:  emergencyStop
+visit_assignment:  (assignment (variable name: (identifier)) (boolean))
+
+variable name:  emergencyStop
+
+variables:  {'sensorValue': ('INT', '%IW0.0'), 'safeThreshold': ('INT', '%QW0.0'), 'emergencyStop': ('BOOL', '%QX0.1')}
+content:  %IW0.0,INT,9
+
+plc_inputs:  [{'name': '%IW0.0', 'type': 'INT', 'value': 9}]
+plc_input_code:  #include "iec_std_lib.h"
+#include "iec_types_all.h" 
+#include <string.h>
+#include <stdlib.h>
+#include "/mnt/ceph/koff9454/projects/plc_runtime_fuzzer/runtime/inputs.h"
+
+    
+extern INT *__IW0_0;
+
+void set_plc_input(const char *name, const char *type, PLC_Value value) {
+
+    if (strcmp(name, "%IW0.0") == 0) {
+        if (strcmp(type, "INT") == 0) {
+            *__IW0_0 = (INT)value._INT;
+        }
+    }
+}
+(source_file (program_definition program_name: (identifier) (variable_definition (variable_definition_body name: (identifier) address: (address) type: (basic_data_type) value: (integer)) (block_comment) (variable_definition_body name: (identifier) address: (address) type: (basic_data_type) value: (integer)) (block_comment) (variable_definition_body name: (identifier) address: (address) type: (basic_data_type)) (block_comment)) (block_comment) (block_comment) (if_statement condition: (binary_expression (variable name: (identifier)) (variable name: (identifier))) (assignment (variable name: (identifier)) (boolean)) (block_comment) (else_clause (assignment (variable name: (identifier)) (boolean))) (block_comment))) (configuration (identifier) (resource (identifier) (task (identifier) (time) (integer)) (program_instance (identifier) (identifier) (identifier)))))
+variable_name:  sensorValue
+variable_type:  INT
+variable_address:  %IW0.0
+
+variable_name:  safeThreshold
+variable_type:  INT
+variable_address:  %QW0.0
+
+variable_name:  emergencyStop
+variable_type:  BOOL
+variable_address:  %QX0.1
+
+visit_assignment:  (assignment (variable name: (identifier)) (boolean))
+
+variable name:  emergencyStop
+visit_assignment:  (assignment (variable name: (identifier)) (boolean))
+
+variable name:  emergencyStop
+
+variables:  {'sensorValue': ('INT', '%IW0.0'), 'safeThreshold': ('INT', '%QW0.0'), 'emergencyStop': ('BOOL', '%QX0.1')}
+content:  %IW0.0,INT,9
+
+plc_inputs:  [{'name': '%IW0.0', 'type': 'INT', 'value': 9}]
+plc_input_code:  #include "iec_std_lib.h"
+#include "iec_types_all.h" 
+#include <string.h>
+#include <stdlib.h>
+#include "/mnt/ceph/koff9454/projects/plc_runtime_fuzzer/runtime/inputs.h"
+
+    
+extern INT *__IW0_0;
+
+void set_plc_input(const char *name, const char *type, PLC_Value value) {
+
+    if (strcmp(name, "%IW0.0") == 0) {
+        if (strcmp(type, "INT") == 0) {
+            *__IW0_0 = (INT)value._INT;
+        }
+    }
+}
+~/projects/plc_runtime_fuzzer/runtime ~/projects/plc_runtime_fuzzer/code_analysis/src/programs/complex_1
+~/projects/plc_runtime_fuzzer/runtime ~/projects/plc_runtime_fuzzer/code_analysis/src/programs/complex_1
+(source_file (program_definition program_name: (identifier) (variable_definition (variable_definition_body name: (identifier) address: (address) type: (basic_data_type) value: (integer)) (block_comment) (variable_definition_body name: (identifier) address: (address) type: (basic_data_type) value: (integer)) (block_comment) (variable_definition_body name: (identifier) address: (address) type: (basic_data_type)) (block_comment)) (block_comment) (block_comment) (if_statement condition: (binary_expression (variable name: (identifier)) (variable name: (identifier))) (assignment (variable name: (identifier)) (boolean)) (block_comment) (else_clause (assignment (variable name: (identifier)) (boolean))) (block_comment))) (configuration (identifier) (resource (identifier) (task (identifier) (time) (integer)) (program_instance (identifier) (identifier) (identifier)))))
+variable_name:  sensorValue
+variable_type:  INT
+variable_address:  %IW0.0
+
+variable_name:  safeThreshold
+variable_type:  INT
+variable_address:  %QW0.0
+
+variable_name:  emergencyStop
+variable_type:  BOOL
+variable_address:  %QX0.1
+
+visit_assignment:  (assignment (variable name: (identifier)) (boolean))
+
+variable name:  emergencyStop
+visit_assignment:  (assignment (variable name: (identifier)) (boolean))
+
+variable name:  emergencyStop
+
+variables:  {'sensorValue': ('INT', '%IW0.0'), 'safeThreshold': ('INT', '%QW0.0'), 'emergencyStop': ('BOOL', '%QX0.1')}
+content:  %IW0.0,INT,9
+
+plc_inputs:  [{'name': '%IW0.0', 'type': 'INT', 'value': 9}]
+plc_input_code:  #include "iec_std_lib.h"
+#include "iec_types_all.h" 
+#include <string.h>
+#include <stdlib.h>
+#include "/mnt/ceph/koff9454/projects/plc_runtime_fuzzer/runtime/inputs.h"
+
+    
+extern INT *__IW0_0;
+
+void set_plc_input(const char *name, const char *type, PLC_Value value) {
+
+    if (strcmp(name, "%IW0.0") == 0) {
+        if (strcmp(type, "INT") == 0) {
+            *__IW0_0 = (INT)value._INT;
+        }
+    }
+}
+(source_file (program_definition program_name: (identifier) (variable_definition (variable_definition_body name: (identifier) address: (address) type: (basic_data_type) value: (integer)) (block_comment) (variable_definition_body name: (identifier) address: (address) type: (basic_data_type) value: (integer)) (block_comment) (variable_definition_body name: (identifier) address: (address) type: (basic_data_type)) (block_comment)) (block_comment) (block_comment) (if_statement condition: (binary_expression (variable name: (identifier)) (variable name: (identifier))) (assignment (variable name: (identifier)) (boolean)) (block_comment) (else_clause (assignment (variable name: (identifier)) (boolean))) (block_comment))) (configuration (identifier) (resource (identifier) (task (identifier) (time) (integer)) (program_instance (identifier) (identifier) (identifier)))))
+variable_name:  sensorValue
+variable_type:  INT
+variable_address:  %IW0.0
+
+variable_name:  safeThreshold
+variable_type:  INT
+variable_address:  %QW0.0
+
+variable_name:  emergencyStop
+variable_type:  BOOL
+variable_address:  %QX0.1
+
+visit_assignment:  (assignment (variable name: (identifier)) (boolean))
+
+variable name:  emergencyStop
+visit_assignment:  (assignment (variable name: (identifier)) (boolean))
+
+variable name:  emergencyStop
+
+variables:  {'sensorValue': ('INT', '%IW0.0'), 'safeThreshold': ('INT', '%QW0.0'), 'emergencyStop': ('BOOL', '%QX0.1')}
+content:  %IW0.0,INT,9
+
+plc_inputs:  [{'name': '%IW0.0', 'type': 'INT', 'value': 9}]
+plc_input_code:  #include "iec_std_lib.h"
+#include "iec_types_all.h" 
+#include <string.h>
+#include <stdlib.h>
+#include "/mnt/ceph/koff9454/projects/plc_runtime_fuzzer/runtime/inputs.h"
+
+    
+extern INT *__IW0_0;
+
+void set_plc_input(const char *name, const char *type, PLC_Value value) {
+
+    if (strcmp(name, "%IW0.0") == 0) {
+        if (strcmp(type, "INT") == 0) {
+            *__IW0_0 = (INT)value._INT;
+        }
+    }
+}
+POUS.c
+POUS.h
+LOCATED_VARIABLES.h
+VARIABLES.csv
+STD_CONF.c
+STD_CONF.h
+STD_RESSOURCE.c
+POUS.c
+POUS.h
+LOCATED_VARIABLES.h
+VARIABLES.csv
+STD_CONF.c
+STD_CONF.h
+STD_RESSOURCE.c

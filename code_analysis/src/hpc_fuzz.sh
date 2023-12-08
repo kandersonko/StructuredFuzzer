@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 #SBATCH -N 1
 #SBATCH --time=04:00:00
 #SBATCH --mem=8G
@@ -25,6 +25,14 @@ source ~/.bashrc
 # activate conda environment
 conda activate plc
 
+conda env list
+
+module load gcc/11.3.0
+module load cmake
+
+# gcc version
+gcc --version
+
 python --version
 which python
 
@@ -38,4 +46,4 @@ programs=($(ls programs))
 program=${programs[$SLURM_ARRAY_TASK_ID]}
 echo "Fuzzing program: $program"
 
-srun ./fuzz.sh ./programs/$program $program $duration
+srun ./fuzz.sh ./programs/$program "$program.st" $duration $SLURM_ARRAY_TASK_ID
