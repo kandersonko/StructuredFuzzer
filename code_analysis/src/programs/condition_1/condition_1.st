@@ -9,7 +9,7 @@ PROGRAM My_Program
     led := TRUE;
   ELSE
     led := FALSE;
-  END_IF;
+  END_IF;function
 END_PROGRAM
 
 

@@ -13,6 +13,8 @@ VARIABLES.csv
 outdir/
 *-outdir/
 *-indir/
+outdir/
+indir/
 
 # ignore matiec folder
 matiec/
@@ -20,6 +22,7 @@ matiec/
 # ignore jobs logs
 jobs/
 runs/
+*.log
 
 # temp folder
 tmp.*/

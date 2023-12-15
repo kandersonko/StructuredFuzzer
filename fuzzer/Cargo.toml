@@ -1,0 +1,42 @@
+[package]
+name = "fuzzer"
+version = "0.11.1"
+# based on the fuzzbench_forkserver example from libafl
+authors = ["Koffi Anderson Koffi <kkoffi@uidaho.edu>"]
+edition = "2021"
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3
+debug = true
+
+[profile.release-fuzzbench]
+inherits = "release"
+debug = false
+strip = true
+
+[build-dependencies]
+cc = { version = "1.0", features = ["parallel"] }
+which = "4.4"
+
+[dependencies]
+# rev = "ee447468c6070a8548a2ad6366ae6ebb28a3e3d2"
+libafl = { git = "https://github.com/AFLplusplus/LibAFL" , rev = "ee447468c6070a8548a2ad6366ae6ebb28a3e3d2" }
+libafl_bolts = {git = "https://github.com/AFLplusplus/LibAFL", rev = "ee447468c6070a8548a2ad6366ae6ebb28a3e3d2" }
+libafl_targets = { git = "https://github.com/AFLplusplus/LibAFL", rev = "ee447468c6070a8548a2ad6366ae6ebb28a3e3d2" }
+clap = { version = "4.0", features = ["default"] }
+nix = "0.26"
+rand = "0.8.5"
+
+[lib]
+name = "fuzzer"
+src = ["src/lib.rs"]
+
+[[bin]]
+name = "fuzzer"
+path = "src/main.rs"
+
+[[bin]]
+name = "test_mutator"
+path = "src/bin/test_mutator.rs"
