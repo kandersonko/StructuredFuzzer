@@ -69,10 +69,10 @@ build() {
 
 }
 
-# clean() {
-#     rm -rf $TMP_DIR
-#     echo "Cleaned up temporary directory."
-# }
+clean() {
+    rm -rf $TMP_DIR
+    echo "Cleaned up temporary directory."
+}
 
 # # Check for additional command-line arguments
 # if [[ "$2" == "clean" ]]; then
@@ -86,4 +86,3 @@ build() {
 
 # Default build
 build
-
