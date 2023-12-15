@@ -45,7 +45,7 @@ use nix::sys::signal::Signal;
 use libafl::mutators::Mutator;
 
 // import the PLCRuntimeMutator from lib.rs
-use fuzzer::PLCRandomInputMutator;
+use fuzzer::mutators::PLCRandomInputMutator;
 
 
 fn main() -> Result<(), libafl::Error> {

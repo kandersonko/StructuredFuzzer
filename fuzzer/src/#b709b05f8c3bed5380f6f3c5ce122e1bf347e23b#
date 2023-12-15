@@ -1,0 +1,44 @@
+
+use libafl::{
+    bolts::tuples::Named,
+    corpus::Testcase,
+    events::EventFirer,
+    executors::ExitKind,
+    feedbacks::{Feedback, MapFeedbackState},
+    inputs::Input,
+    observers::ObserversTuple,
+    state::State,
+    Error,
+};
+
+pub struct CrashLimitFeedback {
+    crash_counter: usize,
+    crash_limit: usize,
+}
+
+impl CrashLimitFeedback {
+    pub fn new(crash_limit: usize) -> Self {
+        Self {
+            crash_counter: 0,
+            crash_limit,
+        }
+    }
+}
+
+impl<I, S> Feedback<I, S> for CrashLimitFeedback
+where
+    I: Input,
+    S: State,
+{
+    fn is_interesting(&mut self, state: &mut S, _testcase: &Testcase<I>, observers: &ObserversTuple, exit_kind: &ExitKind) -> Result<u32, Error> {
+        if matches!(exit_kind, ExitKind::Crash) {
+            self.crash_counter += 1;
+            if self.crash_counter >= self.crash_limit {
+                println!("Crash limit reached: {}", self.crash_limit);
+                // use shutdown to stop the fuzzer
+                state.shutdown();
+            }
+        }
+        Ok(0)
+    }
+}

@@ -10,18 +10,19 @@ use std::{
 use clap::{Arg, ArgAction, Command};
 use libafl::{
     corpus::{Corpus, InMemoryOnDiskCorpus, OnDiskCorpus},
-    events::SimpleEventManager,
+    events::{SimpleEventManager, EventFirer},
     executors::forkserver::{ForkserverExecutor, TimeoutForkserverExecutor},
+    executors::ExitKind,
     feedback_or,
-    feedbacks::{CrashFeedback, MaxMapFeedback, TimeFeedback},
+    feedbacks::{CrashFeedback, MaxMapFeedback, TimeFeedback, Feedback},
     fuzzer::{Fuzzer, StdFuzzer},
-    inputs::BytesInput,
+    inputs::{BytesInput, UsesInput, Input},
     monitors::SimpleMonitor,
     mutators::{
         scheduled::havoc_mutations, token_mutations::I2SRandReplace, tokens_mutations,
         StdMOptMutator, StdScheduledMutator, Tokens,
     },
-    observers::{HitcountsMapObserver, StdCmpValuesObserver, StdMapObserver, TimeObserver},
+    observers::{ObserversTuple, HitcountsMapObserver, StdCmpValuesObserver, StdMapObserver, TimeObserver},
     schedulers::{
         powersched::PowerSchedule, IndexesLenTimeMinimizerScheduler, StdWeightedScheduler,
     },
@@ -29,10 +30,14 @@ use libafl::{
         calibrate::CalibrationStage, power::StdPowerMutationalStage, StdMutationalStage,
         TracingStage,
     },
-    state::{HasCorpus, HasMetadata, StdState},
+    state::{HasCorpus, HasMetadata, StdState, State},
     Error,
 };
+
+use libafl::state::MaybeHasClientPerfMonitor;
+
 use libafl_bolts::{
+    Named,
     current_nanos, current_time,
     rands::StdRand,
     shmem::{ShMem, ShMemProvider, UnixShMemProvider},
@@ -43,13 +48,73 @@ use libafl_targets::cmps::AFLppCmpLogMap;
 use nix::sys::signal::Signal;
 
 // import the PLCRuntimeMutator from lib.rs
-use fuzzer::PLCRandomInputMutator;
+use fuzzer::mutators::PLCRandomInputMutator;
+
+use std::sync::atomic::{AtomicUsize, Ordering};
+
+// Global crash counter
+static CRASH_COUNTER: AtomicUsize = AtomicUsize::new(0);
+
+// Custom CrashFeedback implementation
+struct CustomCrashFeedback {
+    crash_limit: usize,
+}
+
+impl CustomCrashFeedback {
+    pub fn new(crash_limit: usize) -> Self {
+        Self { crash_limit }
+    }
+}
+
+impl Named for CustomCrashFeedback {
+    #[inline]
+    fn name(&self) -> &str {
+        "CrashFeedback"
+    }
+}
+
+impl<S> Feedback<S> for CustomCrashFeedback
+where
+    S: UsesInput + State,
+{
+    #[allow(clippy::wrong_self_convention)]
+    fn is_interesting<EM, OT>(
+        &mut self,
+        _state: &mut S,
+        _manager: &mut EM,
+        _input: &S::Input,
+        _observers: &OT,
+        exit_kind: &ExitKind,
+    ) -> Result<bool, Error>
+    where
+        EM: EventFirer<State = S>,
+        OT: ObserversTuple<S>,
+    {
+        if let ExitKind::Crash = exit_kind {
+            // Increment the global crash counter
+            CRASH_COUNTER.fetch_add(1, Ordering::SeqCst);
+            Ok(true)
+        }
+        else {
+            Ok(false)
+        }
+    }
+}
+
+// how to use the fuzzer:
+//./fuzzer -x inputs.dict -i indir/ -o outdir -n 1000 -- ./depth_1 @@
 
 pub fn main() {
     let res = match Command::new(env!("CARGO_PKG_NAME"))
         .version(env!("CARGO_PKG_VERSION"))
         .author("AFLplusplus team")
         .about("LibAFL-based fuzzer for Fuzzbench")
+        .arg(
+            Arg::new("crash_limit")
+                .short('n')
+                .long("crash-limit")
+                .help("Stop fuzzing after this number of crashes")
+        )
         .arg(
             Arg::new("out")
                 .short('o')
@@ -123,6 +188,12 @@ pub fn main() {
         }
     };
 
+    let crash_limit = res
+        .get_one::<String>("crash_limit")
+        .map(|v| v.parse::<usize>().expect("Invalid number for crash limit"))
+        .unwrap_or(usize::MAX); // Default to unlimited if not specified
+
+
     println!(
         "Workdir: {:?}",
         env::current_dir().unwrap().to_string_lossy().to_string()
@@ -193,6 +264,7 @@ pub fn main() {
     fuzz(
         out_dir,
         crashes,
+        crash_limit,
         &in_dir,
         tokens,
         &logfile,
@@ -210,6 +282,7 @@ pub fn main() {
 fn fuzz(
     corpus_dir: PathBuf,
     objective_dir: PathBuf,
+    crash_limit: usize,
     seed_dir: &PathBuf,
     tokenfile: Option<PathBuf>,
     logfile: &PathBuf,
@@ -269,7 +342,13 @@ fn fuzz(
     );
 
     // A feedback to choose if an input is a solution or not
-    let mut objective = CrashFeedback::new();
+    // Use both the crash feedback and the objective feedback
+    let mut objective = feedback_or!(
+        // Crash feedback, this one does not need a feedback state
+        CrashFeedback::new(),
+        // New maximization map feedback linked to the edges observer and the feedback state
+        CustomCrashFeedback::new(crash_limit)
+    );
 
     // create a State from scratch
     let mut state = StdState::new(
@@ -381,7 +460,15 @@ fn fuzz(
         // The order of the stages matter!
         let mut stages = tuple_list!(calibration, power);
 
-        fuzzer.fuzz_loop(&mut stages, &mut executor, &mut state, &mut mgr)?;
+        // fuzzer.fuzz_loop(&mut stages, &mut executor, &mut state, &mut mgr)?;
+        // Modify the fuzzing loop to check for the crash limit
+        while CRASH_COUNTER.load(Ordering::SeqCst) < crash_limit {
+            // const STATS_TIMEOUT_DEFAULT: Duration = Duration::from_secs(2);
+            // let monitor_timeout = STATS_TIMEOUT_DEFAULT;
+            // mgr.maybe_report_progress(state, monitor_timeout)?;
+            fuzzer.fuzz_one(&mut stages, &mut executor, &mut state, &mut mgr)?;
+        }
+        println!("Crash limit reached: {}", crash_limit);
     }
 
     // Never reached
