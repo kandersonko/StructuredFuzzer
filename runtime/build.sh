@@ -1,6 +1,7 @@
 #!/bin/bash
-#
-# source ~/.bashrc
+
+# Determine the directory where this script is located
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Check if an argument is provided
 if [ -z "$1" ]; then
@@ -8,24 +9,30 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-STFILE="$1"
-
-EXECUTABLE=${3:-softplc}
-
-# the fuzzing harness to use
-HARNESS=$4
-SET_INPUT=$5
+STFILE="$(realpath $1)"
+EXECUTABLE_NAME=${3:-softplc}
+HARNESS="$(realpath $4)"
+SET_INPUT="$(realpath $5)"
 
 CC=afl-clang-fast
-# CC=gcc
-# CC=arm-none-eabi-gcc
-IECGENERATEDSOURCES="STD_CONF.c STD_RESSOURCE.c"
-SOURCES="$IECGENERATEDSOURCES plc.c main.c"
-OBJECTS=${SOURCES//.c/.o}
+IECGENERATEDSOURCES="STD_CONF.c STD_RESSOURCE.c"  # These will be generated in the temp folder
+SOURCES="$IECGENERATEDSOURCES main.c plc.c"
 CFLAGS="-std=gnu99 -w -I $MATIEC_C_INCLUDE_PATH -c"
 LDFLAGS="-lrt"
 
-export AFL_LLVM_DICT2FILE=~/auto_dictionary
+# export AFL_LLVM_DICT2FILE=~/auto_dictionary
+
+# Create a temporary directory within the script's directory
+TMP_DIR=$(mktemp -d "$SCRIPT_DIR/tmp.XXXXXX")
+echo "Created temporary directory: $TMP_DIR"
+
+# Copy main.c and plc.c to the temporary directory
+cp "$SCRIPT_DIR/main.c" "$TMP_DIR/"
+cp "$SCRIPT_DIR/plc.c" "$TMP_DIR/"
+cp "$SCRIPT_DIR/inputs.h" "$TMP_DIR/"
+
+# Change to the temporary directory
+cd $TMP_DIR
 
 build() {
     # Check if STFILE exists
@@ -35,38 +42,48 @@ build() {
     fi
 
     # Generate IEC sources from ST file
+    echo "Generating IEC sources from ST file"
     iec2c $STFILE -I $MATIEC_INCLUDE_PATH
 
     # Compile the sources
+    OBJECTS=""
     for source in $SOURCES; do
-        object_file=${source//.c/.o}
+        object_file=$(basename ${source//.c/.o})
         $CC $CFLAGS $source -o $object_file
+        OBJECTS="$OBJECTS $object_file"  # Append the object file name to OBJECTS
     done
-    
+
     # compile the fuzzing harness
-    $CC $CFLAGS $HARNESS -o harness.o 
-    
-    $CC $CFLAGS $SET_INPUT -o SET_INPUT.o 
+    echo "Compiling the fuzzing harness"
+    $CC $CFLAGS $HARNESS -o harness.o
+
+    echo "Compiling the set_input"
+    $CC $CFLAGS $SET_INPUT -o SET_INPUT.o
 
     # Link the object files with the fuzzing harness
-    $CC $OBJECTS harness.o SET_INPUT.o -o $EXECUTABLE $LDFLAGS
-    
-    # $CC $OBJECTS -o $EXECUTABLE $LDFLAGS
+    echo "Creating the executable"
+    $CC $OBJECTS harness.o SET_INPUT.o -o $EXECUTABLE_NAME $LDFLAGS
+
+    # Move the executable to the original directory
+    # mv $EXECUTABLE_NAME "$(dirname $STFILE)/$(basename $EXECUTABLE_NAME)"
+
 }
 
-clean() {
-    rm -f POUS.c POUS.h LOCATED_VARIABLES.h VARIABLES.csv STD_CONF.c STD_CONF.h STD_RESSOURCE.c *.o $EXECUTABLE
-}
+# clean() {
+#     rm -rf $TMP_DIR
+#     echo "Cleaned up temporary directory."
+# }
 
-# Check for additional command-line arguments
-if [[ "$2" == "clean" ]]; then
-    clean
-    exit 0
-elif [[ "$2" == "fresh" ]]; then
-    clean
-    build
-    exit 0
-fi
+# # Check for additional command-line arguments
+# if [[ "$2" == "clean" ]]; then
+#     clean
+#     exit 0
+# elif [[ "$2" == "fresh" ]]; then
+#     clean
+#     build
+#     exit 0
+# fi
 
 # Default build
 build
+
