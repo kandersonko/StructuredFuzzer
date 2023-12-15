@@ -46,4 +46,4 @@ programs=($(ls programs))
 program=${programs[$SLURM_ARRAY_TASK_ID]}
 echo "Fuzzing program: $program"
 
-srun ./fuzz.sh ./programs/$program "$program.st" $duration $SLURM_ARRAY_TASK_ID
+./fuzz.sh ./programs/$program "$program.st" $duration $SLURM_ARRAY_TASK_ID

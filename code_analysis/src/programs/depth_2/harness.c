@@ -26,10 +26,6 @@ void fuzzer_harness(void) {
   {
     abort();
   }
-  else if(*__IX0_2 == 1)
-  {
-    abort();
-  }
   else
   {
     printf("Test failed for the inputs\n");

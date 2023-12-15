@@ -13,6 +13,7 @@ void fuzzer_harness(void) {
 
   printf("[+] output QX0.0 = %s\n", *__QX0_0? "TRUE" : "FALSE");
 
+  if(conveyorSpeed > 200.0) abort();
   if(*__IX0_0 == 1 )
   {
     abort();

@@ -1,0 +1,5 @@
+libpng-*
+fuzzer
+target/
+.cur_input_*
+*.log

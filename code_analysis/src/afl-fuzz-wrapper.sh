@@ -1,2 +1,2 @@
 #!/bin/bash
-afl-fuzz "$@"
+singularity exec afl-fuzz "$@"
