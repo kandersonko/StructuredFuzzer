@@ -7,6 +7,7 @@ VAR
     systemStatus AT %QW0.0 : INT;        (* Status of the system (0 -> "Safe", 1 -> "Warning", -1 -> "Critical") *)
 END_VAR
 
+safetyOverride := TRUE; (* Assume safety override is off by default *)
 
 (* Complex Logical Bug: Incorrect logical conjunctions and misplaced parentheses *)
 IF (conveyorBeltSpeed > 80 AND temperatureSensor < 100.0) OR (pressureSensor > 50.0) AND NOT safetyOverride THEN

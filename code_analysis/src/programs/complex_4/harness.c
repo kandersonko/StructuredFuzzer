@@ -17,15 +17,15 @@ void fuzzer_harness(void) {
     printf("[+] Warning Alarm On (QX0.4) = %s\n", *__QX0_4 ? "TRUE" : "FALSE");
 
     // Simulate the operation of the safety-critical system
-    if(*__IW0_0 == 1) {
+    if(*__IW0_0 == 10 && *__QX0_0) {
         // Train is detected
-        if(!(*__QX0_0) || !(*__QX0_1) || !(*__QX0_2) || *__QX0_3 || !(*__QX0_4)) {
+        if(!(*__QX0_1) || !(*__QX0_2) || !*__QX0_3 || !(*__QX0_4)) {
             printf("Test failed: Incorrect control status when a train is detected\n");
             abort();
         }
     } else {
         // No train detected
-        if(*__QX0_0 || *__QX0_1 || *__QX0_2 || !(*__QX0_3) || *__QX0_4) {
+        if(*__QX0_1 || *__QX0_2 || !(*__QX0_3) || *__QX0_4) {
             printf("Test failed: Incorrect control status when no train is detected\n");
             abort();
         }

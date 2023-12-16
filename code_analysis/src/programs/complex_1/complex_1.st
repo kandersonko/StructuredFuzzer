@@ -1,7 +1,7 @@
 
 PROGRAM SafetyCriticalOperation
 VAR
-    sensorValue AT %IW0.0 : INT := 10;     (* Sensor reading, expected range 0-100 *)
+    sensorValue AT %IW0.0 : INT := 100;     (* Sensor reading, expected range 0-100 *)
     safeThreshold AT %QW0.0 : INT := 5;   (* Threshold for safe operation *)
     emergencyStop AT %QX0.1 : BOOL;  (* Emergency stop flag *)
 END_VAR

@@ -10,7 +10,7 @@ END_VAR
 
 
 (* Determine if a train is detected based on the sensor reading *)
-IF sensorReading = 1 THEN
+IF sensorReading = 10 THEN
     trainDetected := TRUE;  (* Train is detected *)
 ELSE
     trainDetected := FALSE; (* No train detected *)
@@ -26,7 +26,7 @@ IF trainDetected THEN
     gateClosed := TRUE;
     redLightOn := TRUE;
     greenLightOn := FALSE;
-    warningAlarmOn := TRUE;
+    warningAlarmOn := FALSE; (* bug: the alrm should be on *)
 ELSE
     (* Open gate and turn off warning systems *)
     (* OpenGate(); *)

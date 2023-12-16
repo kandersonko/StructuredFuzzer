@@ -15,9 +15,15 @@ outdir/
 *-indir/
 outdir/
 indir/
+.cur_input_*
+inputs.dict
+set_plc_input.c
 
 # ignore matiec folder
 matiec/
+
+# executables
+harness
 
 # ignore jobs logs
 jobs/

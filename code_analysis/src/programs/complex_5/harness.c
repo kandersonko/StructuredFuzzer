@@ -16,24 +16,10 @@ void fuzzer_harness(void) {
     printf("[+] Ventilation On (QX0.1) = %s\n", *__QX0_1 ? "TRUE" : "FALSE");
 
     // Simulate the operation of the safety-critical system
-    if(*__ID0_0 >= 21.0 && *__ID0_1 <= 0.5) {
-        // Ventilation should be off
-        if(*__QX0_1) {
-            printf("Test failed: Ventilation should be off\n");
-            abort();
-        }
-    } else {
-        // Ventilation should be on
-        if(!(*__QX0_1)) {
+    if(!(*__ID0_0 <= 21.0 && *__ID0_1 >= 0.5)) {
+        // Ventilation should not be off
+        if(!*__QX0_1) {
             printf("Test failed: Ventilation should be on\n");
-            abort();
-        }
-        // Check alarm status based on oxygen and CO2 levels
-        if((*__ID0_0 < 19.0 || *__ID0_1 > 1.0) && !(*__QX0_0)) {
-            printf("Test failed: Alarm should be activated\n");
-            abort();
-        } else if((*__ID0_0 >= 19.0 && *__ID0_1 <= 1.0) && *__QX0_0) {
-            printf("Test failed: Alarm should be deactivated\n");
             abort();
         }
     }

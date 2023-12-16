@@ -17,26 +17,27 @@ void fuzzer_harness(void) {
     printf("[+] Is Mixing Safe (QX0.3) = %s\n", *__QX0_3 ? "TRUE" : "FALSE");
 
     // Simulate the operation of the safety-critical system
-    if(*__ID0_0 > 50.0 && *__ID0_1 > 50.0) {
+    // both chemicals should be a specific range
+    if(!((10.0 < *__ID0_0 && *__ID0_0 < 50.0) && (10.0 < *__ID0_1 && *__ID0_1 > 50.0))) {
         // Mixing should be considered safe
-        if(!(*__QX0_3)) {
-            printf("Test failed: Mixing conditions should be safe\n");
+        if((*__QX0_3)) {
+            printf("Test failed: Mixing conditions should not be safe\n");
             abort();
         }
         // Valves and mixer should be active
-        if(!(*__QX0_0) || !(*__QX0_1) || !(*__QX0_2)) {
-            printf("Test failed: Valves and mixer should be active\n");
+        if((*__QX0_0) || (*__QX0_1) || (*__QX0_2)) {
+            printf("Test failed: Valves and mixer should not be active\n");
             abort();
         }
     } else {
         // Mixing should not be considered safe
-        if(*__QX0_3) {
-            printf("Test failed: Mixing conditions should not be safe\n");
+        if(!*__QX0_3) {
+            printf("Test failed: Mixing conditions should be safe\n");
             abort();
         }
         // Valves and mixer should be inactive
-        if(*__QX0_0 || *__QX0_1 || *__QX0_2) {
-            printf("Test failed: Valves and mixer should be inactive\n");
+        if(!*__QX0_0 || !*__QX0_1 || !*__QX0_2) {
+            printf("Test failed: Valves and mixer should be active\n");
             abort();
         }
     }

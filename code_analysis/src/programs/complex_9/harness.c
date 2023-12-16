@@ -29,7 +29,7 @@ void fuzzer_harness(void) {
             }
             break;
         case 3: // Heavy items
-            if(*__QD0_0 != 2.0) { // Acknowledging the logical bug for the purpose of the test
+            if(*__QD0_0 > 1.5) { // Acknowledging the logical bug for the purpose of the test
                 printf("Test failed: Incorrect speed for heavy items\n");
                 abort();
             }
