@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH -N 1
-#SBATCH --time=04:00:00
+#SBATCH --time=24:00:00
 #SBATCH --mem=12G
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=2
 #SBATCH -p reg
-#SBATCH --array=0-1
+#SBATCH --array=200-350
 #SBATCH --output=jobs/fuzz_%A_%a.stdout
 #SBATCH --error=jobs/fuzz_%A_%a.stderr
 
@@ -36,11 +36,11 @@ which python
 
 iec2c -v
 
-# duration of 4 hours
-duration=$((60 * 60 * 4))
+# duration of 24 hours
+duration=$((60 * 60 * 24))
 
 # Get the list of programs to fuzz in the `programs` directory as bash array
-programs=($(ls programs))
+programs=($(ls programs/complex_*))
 
 # Calculate the program index and run ID based on SLURM_ARRAY_TASK_ID
 program_index=$(($SLURM_ARRAY_TASK_ID / 10))

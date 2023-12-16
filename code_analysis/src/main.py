@@ -45,8 +45,8 @@ if __name__ == '__main__':
     Path(parent_dir / "indir").mkdir(parents=True, exist_ok=True)
     filename = parent_dir / f"indir/variables.txt"
     # delete the file if it exists
-    if Path(filename).exists():
-        os.remove(filename)
+    # if Path(filename).exists():
+    #     os.remove(filename)
 
     plc_inputs = []
     

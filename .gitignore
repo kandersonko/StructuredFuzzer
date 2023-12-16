@@ -9,6 +9,13 @@ POUS.*
 LOCATED_VARIABLES.h
 VARIABLES.csv
 
+# executables
+harness
+afl-softplc
+our-softplc
+set_plc_input.c
+inputs.dict
+
 # fuzzing
 outdir/
 *-outdir/
@@ -18,6 +25,8 @@ indir/
 .cur_input_*
 inputs.dict
 set_plc_input.c
+
+results/
 
 # ignore matiec folder
 matiec/
