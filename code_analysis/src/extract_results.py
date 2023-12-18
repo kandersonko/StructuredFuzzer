@@ -48,13 +48,13 @@ def main():
     #     # Copy the fuzzer stats file to the output folder
     #     os.system(f"cp {stats} {output_fuzzer_stats}")
     #
-    files = Path(args.input).glob("*/runs/*/libafl.log")
+    files = Path(args.input).glob("*/*/runs/*/libafl.log")
     for file in files:
         if not file.exists(): continue
         # get the run id from the match of the path where there is `run-<id>`
         run = re.search(r'run-(\d+)', str(file)).group(1)
         # get the program name from the match of the path where there is `programs/<name>/`
-        program = re.search(r'programs/([^/]+)/', str(file)).group(1)
+        program = re.search(r'/([^/]+)/runs/', str(file)).group(1)
         # get the fuzzer mode from the match of the path where there is `/<mode>-outdir/`
         mode = 'fuzzer'
 
