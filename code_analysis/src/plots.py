@@ -131,7 +131,7 @@ def process_plot_data(plot_data):
     return pd.concat(dfs)
 
 
-def plot_boxplot(plots_df, program_name, title):
+def plot_boxplot(plots_df, program_name, title=None, our_name='Our', afl_name='AFL++', fuzzer_name='Fuzzer'):
     programs_df = plots_df[plots_df['program'].str.contains(program_name)]
 
     # Filter data for each mode
@@ -185,19 +185,26 @@ def plot_boxplot(plots_df, program_name, title):
 
     plt.xlabel('Program')
     plt.ylabel('Time (s)')
-    plt.title(title)
+    if title:
+        plt.title(title)
 
     # Adding legend
-    plt.legend([bp["boxes"][0], bp["boxes"][1], bp["boxes"][2]], ['AFL', 'Our', 'Fuzzer'])
+    plt.legend([bp["boxes"][0], bp["boxes"][1], bp["boxes"][2]], [afl_name, our_name, fuzzer_name])
+
+    # make the program name more readable, e.g., `complex_1` -> `Complex 1`
+    programs = [program.split('_')[0].capitalize() + ' ' + program.split('_')[1] for program in programs]
+
+    ax.set_xticklabels(programs)
 
     plt.tight_layout()
+    # ax.set_ylabel('Time (s)')
     ax.set_ylabel('Logscale Time (s)')
     ax.set_yscale('log')
 
     plt.savefig(f'./plots/{program_name}_boxplot.png', bbox_inches='tight')
 
 
-def plot_speedup_barplot(plots_df, program_name, title):
+def plot_speedup_barplot(plots_df, program_name, title=None, our_name='Our', afl_name='AFL++', fuzzer_name='Fuzzer'):
     programs_df = plots_df[plots_df['program'].str.contains(program_name)]
 
     # Filter data for each mode
@@ -237,12 +244,16 @@ def plot_speedup_barplot(plots_df, program_name, title):
     bar_width = 0.35
     index = np.arange(len(programs))
 
-    afl_bars = ax.bar(index - bar_width/2, [speedup[0] for speedup in speedup_data], bar_width, label='Speedup over AFL++')
-    our_bars = ax.bar(index + bar_width/2, [speedup[1] for speedup in speedup_data], bar_width, label='Speedup over AFL++ with input generation')
+    afl_bars = ax.bar(index - bar_width/2, [speedup[0] for speedup in speedup_data], bar_width, label=afl_name)
+    our_bars = ax.bar(index + bar_width/2, [speedup[1] for speedup in speedup_data], bar_width, label=our_name)
+
+    # make the program name more readable, e.g., `complex_1` -> `Complex 1`
+    programs = [program.split('_')[0].capitalize() + ' ' + program.split('_')[1] for program in programs]
 
     ax.set_xlabel('Program')
     ax.set_ylabel('Speedup')
-    ax.set_title(title)
+    if title:
+        ax.set_title(title)
     ax.set_xticks(index)
     ax.set_xticklabels(programs)
     ax.legend()
@@ -260,10 +271,10 @@ if __name__ == "__main__":
 
     logfiles = list(Path(args.log_path).glob("*log"))
     log_df = process_logs(logfiles)
-
     cols = ['program', 'program_id', 'run', 'fuzzer_mode', 'relative_time', 'saved_crashes']
     plots_df = plot_data_df[cols]
     log_df = log_df[cols]
+
     merged_df = pd.concat([plots_df, log_df])
     programs = sorted(merged_df['program'].unique(), key=lambda x: int(x.split('_')[1]))
     # remove the indices in the program names
@@ -276,8 +287,8 @@ if __name__ == "__main__":
     }
     for program in programs:
         print("Plotting boxplot for program", program)
-        plot_boxplot(merged_df, program, titles[program])
-        plot_speedup_barplot(merged_df, program, titles[program])
+        plot_boxplot(merged_df, program, our_name='AFL++ with input generation', afl_name='AFL++')
+        plot_speedup_barplot(merged_df, program, our_name='Speedup over AFL++ with input generation', afl_name='Speedup over AFL++')
 
 
     
