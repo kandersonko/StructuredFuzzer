@@ -233,7 +233,7 @@ where
                     VariableSize::Word => {
                         // For a word, generate a random 16-bit number
                         // parsed_input.input_value = InputValue::Integer(rng.between(0, 65535) as i32);
-                        input_value = InputValue::Integer(rng.gen::<i8>() as i32);
+                        input_value = InputValue::Integer(rng.gen_range(-1e3..1e3) as i32);
                     }
                     VariableSize::Double => {
                         // For a double word, generate a random 32-bit float number

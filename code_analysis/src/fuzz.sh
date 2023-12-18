@@ -7,6 +7,8 @@ program=$2
 duration=$3
 # run id defaults to 0
 run_id=${4:-0}
+# fuzzer default to afl-fuzz
+fuzzer=${5:-afl-fuzz}
 
 cd $folder
 
@@ -15,7 +17,7 @@ if [ -d ./indir/ ]; then
   echo "input dir exist, skipping"
 else
   echo "input dir does not exist, creating"
-  python ../../main.py -f $program
+  python ~/projects/plc_runtime_fuzzer/code_analysis/src/main.py -f $program
 fi
 
 # create the run folder
