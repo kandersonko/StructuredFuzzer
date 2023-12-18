@@ -10,11 +10,15 @@ PROGRAM My_Program
   END_VAR
 
   LED_ON := OR(button1, button2);
-  IF LED_ON = TRUE THEN
-    IF button3 = TRUE THEN
-      led := TRUE;
+  IF button1 = TRUE THEN
+    IF button2 = TRUE THEN
+      IF button3 = TRUE THEN
+        led := TRUE;
+      ELSE
+        led := FALSE;
+      END_IF;
     ELSE
-    led := TRUE;
+      led := FALSE;
     END_IF;
   ELSE
     led := FALSE;

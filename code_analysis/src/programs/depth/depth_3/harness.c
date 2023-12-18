@@ -14,21 +14,9 @@ void fuzzer_harness(void) {
 
   printf("[+] output QX0.0 = %s\n", *__QX0_0? "TRUE" : "FALSE");
 
-  if(*__IX0_0 == 1 )
+  if(*__QX0_0 == 1 )
   {
     abort();
-    if(*__IX0_1 == 1)
-    {
-      abort();
-      if(*__IX0_2 == 1)
-      {
-        abort();
-        if(*__IX0_2 == 1)
-        {
-          abort();
-        }
-      }
-    }
   }
   else
   {

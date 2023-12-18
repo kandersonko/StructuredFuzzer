@@ -2,23 +2,12 @@ PROGRAM My_Program
   VAR
     button1 AT %IX0.0 : BOOL;
     button2 AT %IX0.1 : BOOL;
-    button3 AT %IX0.2 : BOOL;
     led AT %QX0.0 : BOOL;
   END_VAR
-  VAR
-    LED_ON : BOOL;
-  END_VAR
 
-  LED_ON := OR(button1, button2);
   IF button1 = TRUE THEN
     IF button2 = TRUE THEN
-      IF button3 = TRUE THEN
-        led := LED_ON;
-      ELSE
-        led := FALSE;
-      END_IF;
-    ELSE
-      led := FALSE;
+      led := TRUE;
     END_IF;
   ELSE
     led := FALSE;

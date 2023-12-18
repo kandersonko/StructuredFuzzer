@@ -21,11 +21,4 @@ void fuzzer_harness(void) {
             abort();
         }
     }
-    else {
-        // Emergency stop SHOULD be activated
-        if((*__QX0_1)) {
-            printf("Test failed: Emergency stop not activated when sensor value is ABOVE or EQUAL to the threshold\n");
-            abort();
-        }
-    }
 }
