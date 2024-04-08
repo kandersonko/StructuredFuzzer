@@ -157,6 +157,7 @@ def plot_boxplot(plots_df, program_name, xlabel, our_name='Our', afl_name='AFL++
     # Accumulate positions
     positions = []
 
+    plotted_programs = []
     for idx, program in enumerate(programs):
         if program not in our_programs_first.index or program not in afl_programs_first.index or program not in fuzzer_programs_first.index:
             print(f'Program {program} not found in all dataframes')
@@ -165,15 +166,22 @@ def plot_boxplot(plots_df, program_name, xlabel, our_name='Our', afl_name='AFL++
         our_data = our_programs_first.loc[program]['relative_time']
         afl_data = afl_programs_first.loc[program]['relative_time']
         fuzzer_data = fuzzer_programs_first.loc[program]['relative_time']
+        if not len(our_data) or not len(afl_data) or not len(fuzzer_data):
+            print(f'Program {program} has empty data')
+            continue
 
         # Add data for each fuzzer mode
         boxplot_data.append(afl_data)
         boxplot_data.append(our_data)
         boxplot_data.append(fuzzer_data)
 
+        plotted_programs.append(program)
+
+
+    for idx, program in enumerate(plotted_programs): 
         # Calculate positions for each set of boxplots
-        base_position = idx * 3  # Adjust the multiplier as needed
-        positions.extend([base_position, base_position + 1, base_position + 2])
+        base_position = idx * spacing  # Adjust the multiplier as needed
+        positions.extend([base_position - offset, base_position, base_position + offset])
 
 
     if len(boxplot_data) == 0:
@@ -182,13 +190,15 @@ def plot_boxplot(plots_df, program_name, xlabel, our_name='Our', afl_name='AFL++
     fig, ax = plt.subplots(figsize=(10, 5))
     bp = plt.boxplot(boxplot_data, patch_artist=True, positions=positions,  widths=box_width)
 
+    programs = plotted_programs
+
     # Coloring and setting labels
     colors = ['lightblue', 'lightgray', 'lightgreen'] * len(programs)
     for patch, color in zip(bp['boxes'], colors):
         patch.set_facecolor(color)
 
     # Adjusting x-tick positions and labels
-    plt.xticks([i * 3 + 1 for i in range(len(programs))], programs)
+    plt.xticks([i * spacing for i in range(len(programs))], programs)
 
     plt.xlabel(xlabel)
     plt.ylabel('Time (s)')
@@ -228,6 +238,7 @@ def plot_speedup_barplot(plots_df, program_name, xlabel, our_name='Our', afl_nam
     programs = sorted(programs_df['program'].unique(), key=lambda x: int(x.split('_')[1]))
     speedup_data = []
 
+    plotted_programs = []
     for program in programs:
         if program in our_programs_first.index and program in afl_programs_first.index and program in fuzzer_programs_first.index:
             # Calculate median times for each program
@@ -238,12 +249,12 @@ def plot_speedup_barplot(plots_df, program_name, xlabel, our_name='Our', afl_nam
             # Calculate speedup
             afl_speedup = afl_median / fuzzer_median
             our_speedup = our_median / fuzzer_median
-        else:
-            # Placeholder values if program data is missing
-            afl_speedup = np.nan
-            our_speedup = np.nan
-
-        speedup_data.append((afl_speedup, our_speedup))
+        # else:
+        #     # Placeholder values if program data is missing
+        #     afl_speedup = np.nan
+        #     our_speedup = np.nan
+            plotted_programs.append(program)
+            speedup_data.append((afl_speedup, our_speedup))
 
     # Creating the bar plot
     fig, ax = plt.subplots(figsize=(10, 5))
