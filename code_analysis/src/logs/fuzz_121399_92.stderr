@@ -1,0 +1,2 @@
+double free or corruption (fasttop)
+/var/spool/slurmd/job121492/slurm_script: line 57: 3622558 Aborted                 (core dumped) srun ./fuzz.sh programs/$folder/${program} ${program}.st ${duration} $SLURM_ARRAY_TASK_ID

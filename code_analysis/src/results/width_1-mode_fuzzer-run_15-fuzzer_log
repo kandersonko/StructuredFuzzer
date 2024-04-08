@@ -1,0 +1,4 @@
+1702938500.593723569s [Stats #0] run time: 0h-0m-0s, clients: 1, corpus: 0, objectives: 0, executions: 0, exec/sec: 0.000
+1702938500.596360758s [Testcase #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 0, executions: 1, exec/sec: 0.000
+1702938500.890623415s [Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 1, executions: 1, exec/sec: 0.000
+1702938500.917620418s [Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 2, executions: 1, exec/sec: 0.000

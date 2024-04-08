@@ -1,0 +1,3 @@
+slurmstepd: error: *** STEP 121645.0 ON r4i3n7 CANCELLED AT 2023-12-19T10:39:25 ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** JOB 121645 ON r4i3n7 CANCELLED AT 2023-12-19T10:39:25 ***

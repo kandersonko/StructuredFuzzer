@@ -1,0 +1,268 @@
+JOB timestamp: Tue Dec 19 10:49:39 MST 2023
+JOB ID: 121834
+Array Task ID: 15
+Current directory: /lfs/koff9454.ui/projects/plc_runtime_fuzzer/code_analysis/src
+r3i4n3
+gcc (Spack GCC) 12.1.0
+Copyright (C) 2022 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Python 3.11.5
+/lfs/koff9454.ui/miniconda3/envs/plc/bin/python
+matiec version 0.1
+changeset id: 
+Number of programs: 3
+Programs: depth_1 depth_2 depth_3
+Fuzzing program: depth_1, Job ID: 15
+input dir exist, skipping
+harness file exist, skipping
+Running the fuzzers
+Workdir: "/lfs/koff9454.ui/projects/plc_runtime_fuzzer/code_analysis/src/programs/depth/depth_1/runs/run-15"
+Out dir at "fuzzer-outdir" already exists.
+Let's fuzz :)
+[Stats #0] run time: 0h-0m-0s, clients: 1, corpus: 0, objectives: 0, executions: 0, exec/sec: 0.000
+[Testcase #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 0, executions: 1, exec/sec: 0.000
+We imported 1 inputs from disk.
+[Stats #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 0, executions: 1, exec/sec: 0.000
+[Testcase #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 0, executions: 10, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 1, executions: 10, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 2, executions: 10, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 3, executions: 10, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 4, executions: 10, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 5, executions: 10, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 6, executions: 10, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 7, executions: 10, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 8, executions: 10, exec/sec: 9.530
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 9, executions: 10, exec/sec: 8.605
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 10, executions: 10, exec/sec: 7.864
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 11, executions: 10, exec/sec: 7.097
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 12, executions: 10, exec/sec: 6.522
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 13, executions: 10, exec/sec: 6.056
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 14, executions: 10, exec/sec: 5.624
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 15, executions: 10, exec/sec: 5.226
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 16, executions: 10, exec/sec: 4.906
+[1;92m[+] [0mEnabled environment variable AFL_BENCH_UNTIL_CRASH with value 1[0m
+[1;92m[+] [0mEnabled environment variable AFL_IGNORE_SEED_PROBLEMS with value 1[0m
+[1;92m[+] [0mEnabled environment variable AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES with value 1[0m
+[1;92m[+] [0mEnabled environment variable AFL_SKIP_CPUFREQ with value 1[0m
+[1;92m[+] [0mEnabled environment variable AFL_TRY_AFFINITY with value 1[0m
+[1;93m[!] [1;97mWARNING: [0mPotentially mistyped AFL environment variable: USE_PCM_DB=2, did you mean AFL_USE_PCM_DB=2?[0m
+[0;36mafl-fuzz++4.09a[0m based on afl by Michal Zalewski and a large online community
+[1;92m[+] [0mAFL++ is maintained by Marc "van Hauser" Heuse, Dominik Maier, Andrea Fioraldi and Heiko "hexcoder" Eißfeldt[0m
+[1;92m[+] [0mAFL++ is open source, get it at https://github.com/AFLplusplus/AFLplusplus[0m
+[1;92m[+] [0mNOTE: AFL++ >= v3 has changed defaults and behaviours - see README.md[0m
+[1;92m[+] [0mNo -M/-S set, autoconfiguring for "-S default"[0m
+[1;94m[*] [0mGetting to work...[0m
+[1;92m[+] [0mUsing exponential power schedule (FAST)[0m
+[1;92m[+] [0mEnabled testcache with 50 MB[0m
+[1;92m[+] [0mGenerating fuzz data with a length of min=1 max=1048576[0m
+[1;94m[*] [0mChecking core_pattern...[0m
+
+[1;91m[-] [0mHmm, your system is configured to send core dump notifications to an
+    external utility. This will cause issues: there will be an extended delay
+    between stumbling upon a crash and having this information relayed to the
+    fuzzer via the standard waitpid() API.
+    If you're just testing, set 'AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1'.
+
+    To avoid having crashes misinterpreted as timeouts, please log in as root
+    and temporarily modify /proc/sys/kernel/core_pattern, like so:
+
+    echo core >/proc/sys/kernel/core_pattern
+[1;92m[+] [0mLooks like we're not running on a tty, so I'll be a bit less verbose.[0m
+[1;92m[+] [0mYou have 36 CPU cores and 5 runnable tasks (utilization: 14%).[0m
+[1;92m[+] [0mTry parallel jobs - see /usr/local/share/doc/afl/fuzzing_in_depth.md#c-using-multiple-cores[0m
+[1;94m[*] [0mSetting up output directories...[0m
+[1;94m[*] [0mChecking CPU core loadout...[0m
+[1;92m[+] [0mFound a free CPU core, try binding to #0.[0m
+[1;94m[*] [0mScanning 'our-indir'...[0m
+[1;92m[+] [0mLoaded a total of 1 seeds.[0m
+[1;94m[*] [0mCreating hard links for all input files...[0m
+[1;94m[*] [0mValidating target binary...[0m
+[1;94m[*] [0mSpinning up the fork server...[0m
+[1;92m[+] [0mAll right - fork server is up.[0m
+[1;94m[*] [0mTarget map size: 59[0m
+[1;94m[*] [0mNo auto-generated dictionary tokens to reuse.[0m
+[1;94m[*] [0mLoading extra dictionary from 'our-inputs.dict' (level 0)...[0m
+[1;94m[*] [0mLoaded 66 extra tokens, size range 4 B to 6 B.[0m
+[1;92m[+] [0mLoaded a total of 5 extras.[0m
+[1;94m[*] [0mAttempting dry run with 'id:000000,time:0,execs:0,orig:variables.txt'...[0m
+[1;90m    len = 308, map size = 17, exec speed = 2111 us, hash = d7117ca9a15ca271
+[0m[1;92m[+] [0mAll test cases processed.[0m
+[1;92m[+] [0mHere are some useful stats:
+
+[1;90m    Test case count : [0m1 favored, 0 variable, 0 ignored, 1 total
+[1;90m       Bitmap range : [0m17 to 17 bits (average: 17.00 bits)
+[1;90m        Exec timing : [0m2111 to 2111 us (average: 2111 us)
+[0m
+[1;94m[*] [0mNo -t option specified, so I'll use an exec timeout of 20 ms.[0m
+[1;92m[+] [0mAll set and ready to roll![0m
+[1;94m[*] [0mEntering queue cycle 1.[0m
+[1;94m[*] [0mFuzzing test case #0 (1 total, 0 crashes saved, state: started :-), mode=explore, perf_score=0, weight=0, favorite=1, was_fuzzed=0, exec_us=2111, hits=0, map=17, ascii=0, run_time=0:00:00:00)...[0m
+[1;92m[+] [0mEnabled environment variable AFL_BENCH_UNTIL_CRASH with value 1[0m
+[1;92m[+] [0mEnabled environment variable AFL_IGNORE_SEED_PROBLEMS with value 1[0m
+[1;92m[+] [0mEnabled environment variable AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES with value 1[0m
+[1;92m[+] [0mEnabled environment variable AFL_SKIP_CPUFREQ with value 1[0m
+[1;92m[+] [0mEnabled environment variable AFL_TRY_AFFINITY with value 1[0m
+[1;93m[!] [1;97mWARNING: [0mPotentially mistyped AFL environment variable: USE_PCM_DB=2, did you mean AFL_USE_PCM_DB=2?[0m
+[0;36mafl-fuzz++4.09a[0m based on afl by Michal Zalewski and a large online community
+[1;92m[+] [0mAFL++ is maintained by Marc "van Hauser" Heuse, Dominik Maier, Andrea Fioraldi and Heiko "hexcoder" Eißfeldt[0m
+[1;92m[+] [0mAFL++ is open source, get it at https://github.com/AFLplusplus/AFLplusplus[0m
+[1;92m[+] [0mNOTE: AFL++ >= v3 has changed defaults and behaviours - see README.md[0m
+[1;92m[+] [0mNo -M/-S set, autoconfiguring for "-S default"[0m
+[1;94m[*] [0mGetting to work...[0m
+[1;92m[+] [0mUsing exponential power schedule (FAST)[0m
+[1;92m[+] [0mEnabled testcache with 50 MB[0m
+[1;92m[+] [0mGenerating fuzz data with a length of min=1 max=1048576[0m
+[1;94m[*] [0mChecking core_pattern...[0m
+
+[1;91m[-] [0mHmm, your system is configured to send core dump notifications to an
+    external utility. This will cause issues: there will be an extended delay
+    between stumbling upon a crash and having this information relayed to the
+    fuzzer via the standard waitpid() API.
+    If you're just testing, set 'AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1'.
+
+    To avoid having crashes misinterpreted as timeouts, please log in as root
+    and temporarily modify /proc/sys/kernel/core_pattern, like so:
+
+    echo core >/proc/sys/kernel/core_pattern
+[1;92m[+] [0mLooks like we're not running on a tty, so I'll be a bit less verbose.[0m
+[1;92m[+] [0mYou have 36 CPU cores and 5 runnable tasks (utilization: 14%).[0m
+[1;92m[+] [0mTry parallel jobs - see /usr/local/share/doc/afl/fuzzing_in_depth.md#c-using-multiple-cores[0m
+[1;94m[*] [0mSetting up output directories...[0m
+[1;94m[*] [0mChecking CPU core loadout...[0m
+[1;92m[+] [0mFound a free CPU core, try binding to #0.[0m
+[1;94m[*] [0mScanning 'afl-indir'...[0m
+[1;92m[+] [0mLoaded a total of 1 seeds.[0m
+[1;94m[*] [0mCreating hard links for all input files...[0m
+[1;94m[*] [0mValidating target binary...[0m
+[1;94m[*] [0mSpinning up the fork server...[0m
+[1;92m[+] [0mAll right - fork server is up.[0m
+[1;94m[*] [0mTarget map size: 59[0m
+[1;94m[*] [0mNo auto-generated dictionary tokens to reuse.[0m
+[1;94m[*] [0mLoading extra dictionary from 'afl-inputs.dict' (level 0)...[0m
+[1;94m[*] [0mLoaded 66 extra tokens, size range 4 B to 6 B.[0m
+[1;92m[+] [0mLoaded a total of 5 extras.[0m
+[1;94m[*] [0mAttempting dry run with 'id:000000,time:0,execs:0,orig:testcase.txt'...[0m
+[1;90m    len = 3, map size = 16, exec speed = 5022 us, hash = 26782fe75b855ca7
+[0m[1;92m[+] [0mAll test cases processed.[0m
+[1;92m[+] [0mHere are some useful stats:
+
+[1;90m    Test case count : [0m1 favored, 0 variable, 0 ignored, 1 total
+[1;90m       Bitmap range : [0m16 to 16 bits (average: 16.00 bits)
+[1;90m        Exec timing : [0m5022 to 5022 us (average: 5022 us)
+[0m
+[1;94m[*] [0mNo -t option specified, so I'll use an exec timeout of 40 ms.[0m
+[1;92m[+] [0mAll set and ready to roll![0m
+[1;94m[*] [0mEntering queue cycle 1.[0m
+[1;94m[*] [0mFuzzing test case #0 (1 total, 0 crashes saved, state: started :-), mode=explore, perf_score=0, weight=0, favorite=1, was_fuzzed=0, exec_us=5022, hits=0, map=16, ascii=0, run_time=0:00:00:00)...[0m
+[1;94m[*] [0mFuzzing test case #1 (2 total, 0 crashes saved, state: started :-), mode=explore, perf_score=0, weight=0, favorite=1, was_fuzzed=0, exec_us=1972, hits=1, map=17, ascii=0, run_time=0:00:00:00)...[0m
+[1;94m[*] [0mFuzzing test case #1 (2 total, 0 crashes saved, state: started :-), mode=explore, perf_score=459, weight=27, favorite=1, was_fuzzed=1, exec_us=1972, hits=1, map=17, ascii=0, run_time=0:00:00:00)...[0m
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 17, executions: 10, exec/sec: 4.536
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 18, executions: 10, exec/sec: 4.237
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 19, executions: 10, exec/sec: 4.009
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 20, executions: 10, exec/sec: 3.788
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 21, executions: 10, exec/sec: 3.612
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 22, executions: 10, exec/sec: 3.449
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 23, executions: 10, exec/sec: 3.276
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 24, executions: 10, exec/sec: 3.141
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 25, executions: 10, exec/sec: 3.020
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 26, executions: 10, exec/sec: 2.895
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 27, executions: 10, exec/sec: 2.783
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 28, executions: 10, exec/sec: 2.681
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 29, executions: 10, exec/sec: 2.588
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 30, executions: 10, exec/sec: 2.505
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 31, executions: 10, exec/sec: 2.423
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 32, executions: 10, exec/sec: 2.346
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 33, executions: 10, exec/sec: 2.274
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 34, executions: 10, exec/sec: 2.207
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 35, executions: 10, exec/sec: 2.145
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 36, executions: 10, exec/sec: 2.082
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 37, executions: 10, exec/sec: 2.021
+[Objective #0] run time: 0h-0m-5s, clients: 1, corpus: 2, objectives: 38, executions: 10, exec/sec: 1.963
+[Objective #0] run time: 0h-0m-5s, clients: 1, corpus: 2, objectives: 39, executions: 10, exec/sec: 1.914
+Crash limit reached: 1
+[1;94m[*] [0mFuzzing test case #15 (17 total, 0 crashes saved, state: started :-), mode=explore, perf_score=0, weight=0, favorite=1, was_fuzzed=0, exec_us=2199, hits=1, map=19, ascii=0, run_time=0:00:00:21)...[0m
+[1;94m[*] [0mFuzzing test case #10 (17 total, 0 crashes saved, state: started :-), mode=explore, perf_score=100, weight=8, favorite=1, was_fuzzed=0, exec_us=2509, hits=16, map=16, ascii=0, run_time=0:00:00:21)...[0m
+[1;94m[*] [0mFuzzing test case #1 (17 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=22, favorite=1, was_fuzzed=1, exec_us=1972, hits=2919, map=17, ascii=0, run_time=0:00:00:21)...[0m
+[1;94m[*] [0mFuzzing test case #10 (17 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=3, favorite=1, was_fuzzed=1, exec_us=2509, hits=44, map=16, ascii=0, run_time=0:00:00:22)...[0m
+[1;94m[*] [0mFuzzing test case #1 (17 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=22, favorite=1, was_fuzzed=1, exec_us=1972, hits=2969, map=17, ascii=0, run_time=0:00:00:23)...[0m
+[1;94m[*] [0mFuzzing test case #10 (17 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=3, favorite=1, was_fuzzed=1, exec_us=2509, hits=51, map=16, ascii=0, run_time=0:00:00:24)...[0m
+[1;94m[*] [0mFuzzing test case #1 (18 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=23, favorite=1, was_fuzzed=1, exec_us=1972, hits=3014, map=17, ascii=0, run_time=0:00:00:25)...[0m
+[1;94m[*] [0mFuzzing test case #15 (19 total, 0 crashes saved, state: started :-), mode=explore, perf_score=345, weight=6, favorite=1, was_fuzzed=1, exec_us=2199, hits=11, map=19, ascii=0, run_time=0:00:00:25)...[0m
+[1;94m[*] [0mFuzzing test case #1 (19 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=24, favorite=1, was_fuzzed=1, exec_us=1972, hits=3075, map=17, ascii=0, run_time=0:00:00:28)...[0m
+[1;94m[*] [0mFuzzing test case #1 (19 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=24, favorite=1, was_fuzzed=1, exec_us=1972, hits=3115, map=17, ascii=0, run_time=0:00:00:28)...[0m
+[1;94m[*] [0mFuzzing test case #10 (19 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=3, favorite=1, was_fuzzed=1, exec_us=2509, hits=64, map=16, ascii=0, run_time=0:00:00:29)...[0m
+[1;94m[*] [0mFuzzing test case #1 (19 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=24, favorite=1, was_fuzzed=1, exec_us=1972, hits=3162, map=17, ascii=0, run_time=0:00:00:30)...[0m
+[1;94m[*] [0mFuzzing test case #1 (19 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=24, favorite=1, was_fuzzed=1, exec_us=1972, hits=3180, map=17, ascii=0, run_time=0:00:00:31)...[0m
+[1;94m[*] [0mFuzzing test case #1 (19 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=24, favorite=1, was_fuzzed=1, exec_us=1972, hits=3208, map=17, ascii=0, run_time=0:00:00:31)...[0m
+[?25h[1;91m
+
++++ Testing aborted programmatically +++
+[0m[1;94m[*] [0mStatistics: 28 new corpus items found, 50.85% coverage achieved, 1 crashes saved, 0 timeouts saved, total runtime 0 days, 0 hrs, 0 min, 31 sec[0m
+[1;92m[+] [0mWe're done here. Have a nice day!
+[0m
+[1;94m[*] [0mFuzzing test case #1 (19 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=24, favorite=1, was_fuzzed=1, exec_us=1972, hits=3238, map=17, ascii=0, run_time=0:00:00:32)...[0m
+[1;94m[*] [0mFuzzing test case #15 (19 total, 0 crashes saved, state: started :-), mode=explore, perf_score=345, weight=6, favorite=1, was_fuzzed=1, exec_us=2199, hits=46, map=19, ascii=0, run_time=0:00:00:32)...[0m
+[1;94m[*] [0mFuzzing test case #1 (21 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=25, favorite=1, was_fuzzed=1, exec_us=1972, hits=3364, map=17, ascii=0, run_time=0:00:00:34)...[0m
+[1;94m[*] [0mFuzzing test case #21 (22 total, 0 crashes saved, state: started :-), mode=explore, perf_score=0, weight=0, favorite=1, was_fuzzed=0, exec_us=1764, hits=1, map=16, ascii=0, run_time=0:00:00:35)...[0m
+[1;94m[*] [0mFuzzing test case #21 (22 total, 0 crashes saved, state: started :-), mode=explore, perf_score=459, weight=116, favorite=1, was_fuzzed=1, exec_us=1764, hits=1, map=16, ascii=0, run_time=0:00:00:35)...[0m
+[1;94m[*] [0mFuzzing test case #22 (23 total, 0 crashes saved, state: started :-), mode=explore, perf_score=0, weight=0, favorite=1, was_fuzzed=0, exec_us=1620, hits=2, map=16, ascii=0, run_time=0:00:00:38)...[0m
+[1;94m[*] [0mFuzzing test case #1 (23 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=4, favorite=1, was_fuzzed=1, exec_us=1972, hits=3458, map=17, ascii=0, run_time=0:00:00:38)...[0m
+[1;94m[*] [0mFuzzing test case #21 (23 total, 0 crashes saved, state: started :-), mode=explore, perf_score=229, weight=51, favorite=1, was_fuzzed=1, exec_us=1764, hits=18, map=16, ascii=0, run_time=0:00:00:39)...[0m
+[1;94m[*] [0mFuzzing test case #21 (23 total, 0 crashes saved, state: started :-), mode=explore, perf_score=229, weight=51, favorite=1, was_fuzzed=1, exec_us=1764, hits=20, map=16, ascii=0, run_time=0:00:00:40)...[0m
+[1;94m[*] [0mFuzzing test case #1 (23 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=4, favorite=1, was_fuzzed=1, exec_us=1972, hits=3508, map=17, ascii=0, run_time=0:00:00:41)...[0m
+[1;94m[*] [0mFuzzing test case #21 (23 total, 0 crashes saved, state: started :-), mode=explore, perf_score=229, weight=51, favorite=1, was_fuzzed=1, exec_us=1764, hits=34, map=16, ascii=0, run_time=0:00:00:41)...[0m
+[1;94m[*] [0mFuzzing test case #21 (23 total, 0 crashes saved, state: started :-), mode=explore, perf_score=229, weight=51, favorite=1, was_fuzzed=1, exec_us=1764, hits=37, map=16, ascii=0, run_time=0:00:00:43)...[0m
+[1;94m[*] [0mEntering queue cycle 2.[0m
+[1;94m[*] [0mFuzzing test case #20 (23 total, 0 crashes saved, state: started :-), mode=explore, perf_score=200, weight=2, favorite=0, was_fuzzed=0, exec_us=1558, hits=2, map=20, ascii=0, run_time=0:00:00:44)...[0m
+[1;94m[*] [0mFuzzing test case #21 (23 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=42, favorite=1, was_fuzzed=1, exec_us=1764, hits=49, map=16, ascii=0, run_time=0:00:00:45)...[0m
+[1;94m[*] [0mFuzzing test case #22 (23 total, 0 crashes saved, state: started :-), mode=explore, perf_score=690, weight=7, favorite=1, was_fuzzed=1, exec_us=1620, hits=12, map=16, ascii=0, run_time=0:00:00:45)...[0m
+[1;94m[*] [0mFuzzing test case #21 (23 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=42, favorite=1, was_fuzzed=1, exec_us=1764, hits=50, map=16, ascii=0, run_time=0:00:00:49)...[0m
+[1;94m[*] [0mFuzzing test case #23 (24 total, 0 crashes saved, state: started :-), mode=explore, perf_score=0, weight=0, favorite=1, was_fuzzed=0, exec_us=1607, hits=1, map=20, ascii=0, run_time=0:00:00:49)...[0m
+[1;94m[*] [0mFuzzing test case #23 (24 total, 0 crashes saved, state: started :-), mode=explore, perf_score=1839, weight=29, favorite=1, was_fuzzed=1, exec_us=1607, hits=1, map=20, ascii=0, run_time=0:00:00:49)...[0m
+[1;94m[*] [0mFuzzing test case #25 (32 total, 0 crashes saved, state: started :-), mode=explore, perf_score=0, weight=0, favorite=1, was_fuzzed=0, exec_us=1525, hits=12, map=18, ascii=0, run_time=0:00:01:09)...[0m
+[1;94m[*] [0mFuzzing test case #29 (32 total, 0 crashes saved, state: started :-), mode=explore, perf_score=400, weight=27, favorite=1, was_fuzzed=0, exec_us=1776, hits=1, map=21, ascii=0, run_time=0:00:01:09)...[0m
+[1;94m[*] [0mFuzzing test case #28 (34 total, 0 crashes saved, state: started :-), mode=explore, perf_score=400, weight=23, favorite=1, was_fuzzed=0, exec_us=1570, hits=2, map=20, ascii=0, run_time=0:00:01:13)...[0m
+[1;94m[*] [0mFuzzing test case #26 (39 total, 0 crashes saved, state: started :-), mode=explore, perf_score=200, weight=38, favorite=1, was_fuzzed=0, exec_us=1502, hits=7, map=20, ascii=0, run_time=0:00:01:18)...[0m
+[1;94m[*] [0mFuzzing test case #21 (39 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=45, favorite=1, was_fuzzed=1, exec_us=1764, hits=57, map=16, ascii=0, run_time=0:00:01:19)...[0m
+[1;94m[*] [0mFuzzing test case #21 (39 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=45, favorite=1, was_fuzzed=1, exec_us=1764, hits=60, map=16, ascii=0, run_time=0:00:01:19)...[0m
+[1;94m[*] [0mFuzzing test case #21 (39 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=45, favorite=1, was_fuzzed=1, exec_us=1764, hits=62, map=16, ascii=0, run_time=0:00:01:20)...[0m
+[1;94m[*] [0mFuzzing test case #26 (39 total, 0 crashes saved, state: started :-), mode=explore, perf_score=459, weight=15, favorite=1, was_fuzzed=1, exec_us=1502, hits=23, map=20, ascii=0, run_time=0:00:01:21)...[0m
+[1;94m[*] [0mFuzzing test case #25 (43 total, 0 crashes saved, state: started :-), mode=explore, perf_score=459, weight=7, favorite=1, was_fuzzed=1, exec_us=1525, hits=27, map=18, ascii=0, run_time=0:00:01:26)...[0m
+[1;94m[*] [0mFuzzing test case #21 (45 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=49, favorite=1, was_fuzzed=1, exec_us=1764, hits=64, map=16, ascii=0, run_time=0:00:01:28)...[0m
+[1;94m[*] [0mFuzzing test case #26 (45 total, 0 crashes saved, state: started :-), mode=explore, perf_score=229, weight=12, favorite=1, was_fuzzed=1, exec_us=1502, hits=196, map=20, ascii=0, run_time=0:00:01:29)...[0m
+[1;94m[*] [0mFuzzing test case #21 (46 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=50, favorite=1, was_fuzzed=1, exec_us=1764, hits=68, map=16, ascii=0, run_time=0:00:01:31)...[0m
+[1;94m[*] [0mFuzzing test case #21 (46 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=50, favorite=1, was_fuzzed=1, exec_us=1764, hits=76, map=16, ascii=0, run_time=0:00:01:31)...[0m
+[1;94m[*] [0mFuzzing test case #1 (46 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=4, favorite=1, was_fuzzed=1, exec_us=1972, hits=3969, map=17, ascii=0, run_time=0:00:01:32)...[0m
+[1;94m[*] [0mFuzzing test case #10 (46 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=3, favorite=1, was_fuzzed=1, exec_us=2509, hits=135, map=16, ascii=0, run_time=0:00:01:32)...[0m
+[1;94m[*] [0mFuzzing test case #21 (47 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=50, favorite=1, was_fuzzed=1, exec_us=1764, hits=83, map=16, ascii=0, run_time=0:00:01:33)...[0m
+[1;94m[*] [0mFuzzing test case #21 (47 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=50, favorite=1, was_fuzzed=1, exec_us=1764, hits=90, map=16, ascii=0, run_time=0:00:01:33)...[0m
+[1;94m[*] [0mFuzzing test case #10 (48 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=3, favorite=1, was_fuzzed=1, exec_us=2509, hits=154, map=16, ascii=0, run_time=0:00:01:34)...[0m
+[1;94m[*] [0mFuzzing test case #10 (48 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=3, favorite=1, was_fuzzed=1, exec_us=2509, hits=158, map=16, ascii=0, run_time=0:00:01:34)...[0m
+[1;94m[*] [0mFuzzing test case #1 (48 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=5, favorite=1, was_fuzzed=1, exec_us=1972, hits=4047, map=17, ascii=0, run_time=0:00:01:35)...[0m
+[1;94m[*] [0mFuzzing test case #21 (48 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=50, favorite=1, was_fuzzed=1, exec_us=1764, hits=94, map=16, ascii=0, run_time=0:00:01:35)...[0m
+[1;94m[*] [0mFuzzing test case #9 (48 total, 0 crashes saved, state: started :-), mode=explore, perf_score=100, weight=0, favorite=0, was_fuzzed=0, exec_us=2550, hits=106, map=18, ascii=0, run_time=0:00:01:36)...[0m
+[1;94m[*] [0mFuzzing test case #25 (49 total, 0 crashes saved, state: started :-), mode=explore, perf_score=229, weight=6, favorite=1, was_fuzzed=1, exec_us=1525, hits=76, map=18, ascii=0, run_time=0:00:01:36)...[0m
+[1;94m[*] [0mFuzzing test case #21 (49 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=50, favorite=1, was_fuzzed=1, exec_us=1764, hits=99, map=16, ascii=0, run_time=0:00:01:37)...[0m
+[1;94m[*] [0mFuzzing test case #26 (49 total, 0 crashes saved, state: started :-), mode=explore, perf_score=229, weight=12, favorite=1, was_fuzzed=1, exec_us=1502, hits=213, map=20, ascii=0, run_time=0:00:01:38)...[0m
+[1;94m[*] [0mFuzzing test case #15 (49 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=4, favorite=1, was_fuzzed=1, exec_us=2199, hits=155, map=19, ascii=0, run_time=0:00:01:39)...[0m
+[1;94m[*] [0mFuzzing test case #21 (49 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=50, favorite=1, was_fuzzed=1, exec_us=1764, hits=104, map=16, ascii=0, run_time=0:00:01:40)...[0m
+[1;94m[*] [0mFuzzing test case #26 (49 total, 0 crashes saved, state: started :-), mode=explore, perf_score=229, weight=12, favorite=1, was_fuzzed=1, exec_us=1502, hits=234, map=20, ascii=0, run_time=0:00:01:40)...[0m
+[1;94m[*] [0mFuzzing test case #49 (50 total, 0 crashes saved, state: started :-), mode=explore, perf_score=0, weight=0, favorite=1, was_fuzzed=0, exec_us=1550, hits=1, map=22, ascii=0, run_time=0:00:01:41)...[0m
+[1;94m[*] [0mFuzzing test case #23 (50 total, 0 crashes saved, state: started :-), mode=explore, perf_score=229, weight=4, favorite=1, was_fuzzed=1, exec_us=1607, hits=1284, map=20, ascii=0, run_time=0:00:01:41)...[0m
+[1;94m[*] [0mFuzzing test case #49 (50 total, 0 crashes saved, state: started :-), mode=explore, perf_score=1839, weight=29, favorite=1, was_fuzzed=1, exec_us=1550, hits=1, map=22, ascii=0, run_time=0:00:01:43)...[0m
+[1;94m[*] [0mFuzzing test case #52 (53 total, 0 crashes saved, state: started :-), mode=explore, perf_score=0, weight=0, favorite=1, was_fuzzed=0, exec_us=1618, hits=2, map=21, ascii=0, run_time=0:00:02:02)...[0m
+[1;94m[*] [0mFuzzing test case #21 (53 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=49, favorite=1, was_fuzzed=1, exec_us=1764, hits=111, map=16, ascii=0, run_time=0:00:02:02)...[0m
+[1;94m[*] [0mFuzzing test case #21 (53 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=49, favorite=1, was_fuzzed=1, exec_us=1764, hits=111, map=16, ascii=0, run_time=0:00:02:02)...[0m
+[1;94m[*] [0mFuzzing test case #21 (53 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=49, favorite=1, was_fuzzed=1, exec_us=1764, hits=114, map=16, ascii=0, run_time=0:00:02:03)...[0m
+[1;94m[*] [0mFuzzing test case #29 (53 total, 0 crashes saved, state: started :-), mode=explore, perf_score=229, weight=6, favorite=1, was_fuzzed=1, exec_us=1776, hits=64, map=21, ascii=0, run_time=0:00:02:03)...[0m
+[1;94m[*] [0mFuzzing test case #49 (53 total, 0 crashes saved, state: started :-), mode=explore, perf_score=229, weight=11, favorite=1, was_fuzzed=1, exec_us=1550, hits=56, map=22, ascii=0, run_time=0:00:02:04)...[0m
+[1;94m[*] [0mFuzzing test case #21 (53 total, 0 crashes saved, state: started :-), mode=explore, perf_score=114, weight=49, favorite=1, was_fuzzed=1, exec_us=1764, hits=121, map=16, ascii=0, run_time=0:00:02:06)...[0m
+[1;94m[*] [0mFuzzing test case #52 (53 total, 0 crashes saved, state: started :-), mode=explore, perf_score=919, weight=13, favorite=1, was_fuzzed=1, exec_us=1618, hits=2, map=21, ascii=0, run_time=0:00:02:07)...[0m
+[?25h[1;91m
+
++++ Testing aborted programmatically +++
+[0m[1;94m[*] [0mStatistics: 53 new corpus items found, 52.54% coverage achieved, 1 crashes saved, 0 timeouts saved, total runtime 0 days, 0 hrs, 2 min, 9 sec[0m
+[1;92m[+] [0mWe're done here. Have a nice day!
+[0m

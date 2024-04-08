@@ -1,0 +1,18 @@
+sh: line 1: 3622713 Bus error               (core dumped) tput cols 2> /dev/null
+Lmod has detected the following error: The following module(s) are unknown:
+"gcc"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "gcc"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+srun: error: r6i3n9: task 0: Exited with exit code 2
+double free or corruption (fasttop)
+/var/spool/slurmd/job121494/slurm_script: line 57: 3622865 Aborted                 (core dumped) srun ./fuzz.sh programs/$folder/${program} ${program}.st ${duration} $SLURM_ARRAY_TASK_ID
+slurmstepd: error: *** JOB 121494 STEPD TERMINATED ON r6i3n9 AT 2023-12-18T14:34:31 DUE TO JOB NOT ENDING WITH SIGNALS ***
+slurmstepd: error: Unable to destroy container 3621860 in cgroup plugin, giving up after 63 sec

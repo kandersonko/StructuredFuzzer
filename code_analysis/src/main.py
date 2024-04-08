@@ -7,9 +7,13 @@ from pathlib import Path
 
 from constraints import ConstraintVisitor
 from generate import generate_plc_input_function
+import time
+from datetime import datetime
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument("--file", "-f", required=True, help="structured text program file")
+# add the benchmark boolean argument with default value False
+arg_parser.add_argument("--benchmark", "-b", action="store_true", help="benchmark the program")
 
 args = arg_parser.parse_args()
 
@@ -20,6 +24,8 @@ STRUCTURED_TEXT_LANGUAGE = Language(language_path, 'structured_text')
 # Create a Tree-sitter parser
 parser = Parser()
 parser.set_language(STRUCTURED_TEXT_LANGUAGE)
+
+start_time = time.time()
 
 if __name__ == '__main__':
     # read the structured text program file
@@ -68,4 +74,14 @@ if __name__ == '__main__':
     print("plc_input_code: ", plc_input_code)
     # write the plc input code to a file
     filename = parent_dir / "set_plc_input.c"
-    Path(filename).write_text(plc_input_code)
+    if not args.benchmark:
+        Path(filename).write_text(plc_input_code)
+
+    else:
+        # measure the time taken to generate the plc input code
+        end_time = time.time()
+        duration = end_time - start_time
+        print("duration: ", duration)
+        # save the duration to a file with date and time and the program name appended
+        filename = parent_dir / f"duration_{Path(args.file).name}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"
+        Path(filename).write_text(str(duration))

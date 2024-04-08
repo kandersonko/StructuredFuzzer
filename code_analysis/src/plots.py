@@ -8,17 +8,24 @@ import argparse
 
 argparser = argparse.ArgumentParser()
 # add input folder argument
-argparser.add_argument("-i", "--input_path", help="path to the input folder")
+argparser.add_argument("-i", "--input_path", help="path to the input folder", default="./results")
 # add output folder argument
-argparser.add_argument("-o", "--output_path", help="path to the output folder")
+argparser.add_argument("-o", "--output_path", help="path to the output folder", default="./plots")
 # add input folder for log files
-argparser.add_argument("-l", "--log_path", help="path to the log files")
+argparser.add_argument("-l", "--log_path", help="path to the log files", default="./results")
 
 args = argparser.parse_args()
 
 # use science plots
-plt.style.use('science')
+# plt.style.use('science')
 # plt.style.use(['science','ieee'])
+
+FONT_SIZE = 18
+FONT_WEIGHT = 550
+FONT_FAMILY = 'serif'
+
+# Adjust global font size and weight
+plt.rcParams.update({'font.size': FONT_SIZE, 'font.weight': FONT_WEIGHT, 'axes.labelweight': FONT_WEIGHT, 'axes.titleweight': FONT_WEIGHT, 'figure.dpi': 300, 'font.family': FONT_FAMILY})
 
 def process_logs(logfiles):
     dfs = []
@@ -131,7 +138,7 @@ def process_plot_data(plot_data):
     return pd.concat(dfs)
 
 
-def plot_boxplot(plots_df, program_name, title=None, our_name='Our', afl_name='AFL++', fuzzer_name='Fuzzer'):
+def plot_boxplot(plots_df, program_name, xlabel, our_name='Our', afl_name='AFL++', fuzzer_name='Our Fuzzer', rotation=0, box_width=0.6):
     programs_df = plots_df[plots_df['program'].str.contains(program_name)]
 
     # Filter data for each mode
@@ -173,7 +180,7 @@ def plot_boxplot(plots_df, program_name, title=None, our_name='Our', afl_name='A
         print(f'No data for program {program_name}')
         return
     fig, ax = plt.subplots(figsize=(10, 5))
-    bp = plt.boxplot(boxplot_data, patch_artist=True, positions=positions)
+    bp = plt.boxplot(boxplot_data, patch_artist=True, positions=positions,  widths=box_width)
 
     # Coloring and setting labels
     colors = ['lightblue', 'lightgray', 'lightgreen'] * len(programs)
@@ -183,28 +190,29 @@ def plot_boxplot(plots_df, program_name, title=None, our_name='Our', afl_name='A
     # Adjusting x-tick positions and labels
     plt.xticks([i * 3 + 1 for i in range(len(programs))], programs)
 
-    plt.xlabel('Program')
+    plt.xlabel(xlabel)
     plt.ylabel('Time (s)')
-    if title:
-        plt.title(title)
+    plt.xticks(rotation=rotation)
 
     # Adding legend
-    plt.legend([bp["boxes"][0], bp["boxes"][1], bp["boxes"][2]], [afl_name, our_name, fuzzer_name])
+    # plt.legend([bp["boxes"][0], bp["boxes"][1], bp["boxes"][2]], [afl_name, our_name, fuzzer_name])
+    fig.legend([bp["boxes"][0], bp["boxes"][1], bp["boxes"][2]], [afl_name, our_name, fuzzer_name], loc='upper center', ncol=3)
 
     # make the program name more readable, e.g., `complex_1` -> `Complex 1`
     programs = [program.split('_')[0].capitalize() + ' ' + program.split('_')[1] for program in programs]
 
     ax.set_xticklabels(programs)
 
-    plt.tight_layout()
+    # plt.tight_layout()
+    plt.tight_layout(rect=[0, 0., 1, 0.90])
     # ax.set_ylabel('Time (s)')
-    ax.set_ylabel('Logscale Time (s)')
+    ax.set_ylabel('Time (log scale) [s]')
     ax.set_yscale('log')
 
     plt.savefig(f'./plots/{program_name}_boxplot.png', bbox_inches='tight')
 
 
-def plot_speedup_barplot(plots_df, program_name, title=None, our_name='Our', afl_name='AFL++', fuzzer_name='Fuzzer'):
+def plot_speedup_barplot(plots_df, program_name, xlabel, our_name='Our', afl_name='AFL++', fuzzer_name='Our Fuzzer', rotation=0, bar_width=0.35):
     programs_df = plots_df[plots_df['program'].str.contains(program_name)]
 
     # Filter data for each mode
@@ -241,7 +249,7 @@ def plot_speedup_barplot(plots_df, program_name, title=None, our_name='Our', afl
     fig, ax = plt.subplots(figsize=(10, 5))
 
     # Plotting data
-    bar_width = 0.35
+    # bar_width = 0.35
     index = np.arange(len(programs))
 
     afl_bars = ax.bar(index - bar_width/2, [speedup[0] for speedup in speedup_data], bar_width, label=afl_name)
@@ -250,15 +258,34 @@ def plot_speedup_barplot(plots_df, program_name, title=None, our_name='Our', afl
     # make the program name more readable, e.g., `complex_1` -> `Complex 1`
     programs = [program.split('_')[0].capitalize() + ' ' + program.split('_')[1] for program in programs]
 
-    ax.set_xlabel('Program')
-    ax.set_ylabel('Speedup')
-    if title:
-        ax.set_title(title)
-    ax.set_xticks(index)
-    ax.set_xticklabels(programs)
-    ax.legend()
+    # create a dataframe from the data
+    speedup_df = pd.DataFrame(speedup_data, columns=[afl_name, our_name])
+    speedup_df['Program'] = programs
+    # format the speedup values to 2 decimal places
+    speedup_df[afl_name] = speedup_df[afl_name].map('{:.2f}'.format)
+    speedup_df[our_name] = speedup_df[our_name].map('{:.2f}'.format)
+    # make the program name the first column
+    speedup_df = speedup_df[['Program', afl_name, our_name]]
+    # save as a latex table with title, caption, and label
+    speedup_df.to_latex(f'./plots/{program_name}_speedup.tex',
+                        index=False, caption=f'Speedup for {program_name}',
+                        label=f'tab:{program_name}_speedup')
 
-    plt.tight_layout()
+    # save as a csv file
+    speedup_df.to_csv(f'./plots/{program_name}_speedup.csv', index=False)
+
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel('Speedup')
+    ax.set_xticks(index)
+    # ax.set_xticklabels(programs)
+    ax.set_xticklabels(programs, rotation=rotation)
+    # ax.legend()
+
+    fig.legend([afl_bars, our_bars], [afl_name, our_name], loc='upper center', ncol=2)
+
+    # plt.tight_layout()
+    plt.tight_layout(rect=[0, 0., 1, 0.92])
+
     plt.savefig(f'./plots/{program_name}_speedup_barplot.png', bbox_inches='tight')
 
 
@@ -279,16 +306,18 @@ if __name__ == "__main__":
     programs = sorted(merged_df['program'].unique(), key=lambda x: int(x.split('_')[1]))
     # remove the indices in the program names
     programs = set([program.split('_')[0] for program in programs])
-    titles = {
-        'complex': 'First crash time for complex programs',
-        'depth': 'First crash time for programs with variable depths',
-        'width': 'First crash time for programs with variable widths',
-        'condition': 'First crash time for programs with various conditions',
-    }
     for program in programs:
         print("Plotting boxplot for program", program)
-        plot_boxplot(merged_df, program, our_name='AFL++ with input generation', afl_name='AFL++')
-        plot_speedup_barplot(merged_df, program, our_name='Speedup over AFL++ with input generation', afl_name='Speedup over AFL++')
+        if program == 'complex':
+            rotation = 45
+            bar_width = 0.35
+            box_width = 0.9
+            xlabel = 'Program'
+        else:
+            rotation = 0
+            bar_width = 0.08
+            box_width = 0.3
+            xlabel = 'Characteristics'
 
-
-    
+        plot_boxplot(merged_df, program, our_name='AFL++ with input generation', afl_name='AFL++', rotation=rotation, box_width=box_width, xlabel=xlabel)
+        plot_speedup_barplot(merged_df, program, our_name='AFL++ with input generation', afl_name='AFL++', rotation=rotation, bar_width=bar_width, xlabel=xlabel)

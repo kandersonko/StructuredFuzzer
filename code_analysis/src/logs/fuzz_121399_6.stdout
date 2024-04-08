@@ -1,0 +1,62 @@
+JOB timestamp: Mon Dec 18 13:29:19 MST 2023
+JOB ID: 121406
+Array Task ID: 6
+Current directory: /lfs/koff9454.ui/projects/plc_runtime_fuzzer/code_analysis/src
+r2i1n4
+gcc (Spack GCC) 12.1.0
+Copyright (C) 2022 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Python 3.11.5
+/lfs/koff9454.ui/miniconda3/envs/plc/bin/python
+matiec version 0.1
+changeset id: 
+Number of programs: 10
+Programs: complex_1 complex_10 complex_2 complex_3 complex_4 complex_5 complex_6 complex_7 complex_8 complex_9
+Fuzzing program: complex_6, Job ID: 6
+input dir exist, skipping
+harness file exist, skipping
+Running the fuzzers
+Workdir: "/lfs/koff9454.ui/projects/plc_runtime_fuzzer/code_analysis/src/programs/complex/complex_6/runs/run-6"
+Out dir at "fuzzer-outdir" already exists.
+Let's fuzz :)
+[Stats #0] run time: 0h-0m-0s, clients: 1, corpus: 0, objectives: 0, executions: 0, exec/sec: 0.000
+[Testcase #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 0, executions: 1, exec/sec: 0.000
+We imported 1 inputs from disk.
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 1, executions: 1, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 2, executions: 1, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 3, executions: 1, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 4, executions: 1, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 5, executions: 1, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 6, executions: 1, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 1, objectives: 7, executions: 1, exec/sec: 0.995
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 1, objectives: 8, executions: 1, exec/sec: 0.888
+[Stats #0] run time: 0h-0m-1s, clients: 1, corpus: 1, objectives: 8, executions: 1, exec/sec: 0.885
+[Testcase #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 8, executions: 44, exec/sec: 38.86
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 9, executions: 44, exec/sec: 34.41
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 10, executions: 44, exec/sec: 30.80
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 11, executions: 44, exec/sec: 27.96
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 12, executions: 44, exec/sec: 25.48
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 13, executions: 44, exec/sec: 23.53
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 14, executions: 44, exec/sec: 21.96
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 15, executions: 44, exec/sec: 20.64
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 16, executions: 44, exec/sec: 19.36
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 17, executions: 44, exec/sec: 18.21
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 18, executions: 44, exec/sec: 17.12
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 19, executions: 44, exec/sec: 16.10
+[Objective #0] run time: 0h-0m-2s, clients: 1, corpus: 2, objectives: 20, executions: 44, exec/sec: 15.36
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 21, executions: 44, exec/sec: 14.62
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 22, executions: 44, exec/sec: 13.91
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 23, executions: 44, exec/sec: 13.33
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 24, executions: 44, exec/sec: 12.79
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 25, executions: 44, exec/sec: 12.26
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 26, executions: 44, exec/sec: 11.78
+[Objective #0] run time: 0h-0m-3s, clients: 1, corpus: 2, objectives: 27, executions: 44, exec/sec: 11.43
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 28, executions: 44, exec/sec: 11.01
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 29, executions: 44, exec/sec: 10.64
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 30, executions: 44, exec/sec: 10.30
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 31, executions: 44, exec/sec: 10.01
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 32, executions: 44, exec/sec: 9.677
+[Objective #0] run time: 0h-0m-4s, clients: 1, corpus: 2, objectives: 33, executions: 44, exec/sec: 9.334
+Crash limit reached: 1

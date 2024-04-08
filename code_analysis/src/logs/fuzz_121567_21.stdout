@@ -1,0 +1,226 @@
+JOB timestamp: Mon Dec 18 14:40:33 MST 2023
+JOB ID: 121589
+Array Task ID: 21
+Current directory: /lfs/koff9454.ui/projects/plc_runtime_fuzzer/code_analysis/src
+r3i4n10
+gcc (Spack GCC) 12.1.0
+Copyright (C) 2022 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Python 3.11.5
+/lfs/koff9454.ui/miniconda3/envs/plc/bin/python
+matiec version 0.1
+changeset id: 
+Number of programs: 3
+Programs: condition_1 condition_2 condition_3
+Fuzzing program: condition_1, Job ID: 21
+input dir does not exist, creating
+(source_file (program_definition program_name: (identifier) (variable_definition (variable_definition_body name: (identifier) address: (address) type: (basic_data_type)) (variable_definition_body name: (identifier) address: (address) type: (basic_data_type)) (variable_definition_body name: (identifier) address: (address) type: (basic_data_type))) (if_statement condition: (binary_expression (variable name: (identifier)) (variable name: (identifier))) (assignment (variable name: (identifier)) (boolean)) (else_clause (assignment (variable name: (identifier)) (boolean))))) (configuration (identifier) (resource (identifier) (task (identifier) (time) (integer)) (program_instance (identifier) (identifier) (identifier)))))
+variable_name:  button1
+variable_type:  BOOL
+variable_address:  %IX0.0
+
+variable_name:  button2
+variable_type:  BOOL
+variable_address:  %IX0.1
+
+variable_name:  led
+variable_type:  BOOL
+variable_address:  %QX0.0
+
+visit_assignment:  (assignment (variable name: (identifier)) (boolean))
+
+variable name:  led
+visit_assignment:  (assignment (variable name: (identifier)) (boolean))
+
+variable name:  led
+
+variables:  {'button1': ('BOOL', '%IX0.0'), 'button2': ('BOOL', '%IX0.1'), 'led': ('BOOL', '%QX0.0')}
+content:  %IX0.0,BOOL,9
+
+content:  %IX0.1,BOOL,9
+
+plc_inputs:  [{'name': '%IX0.0', 'type': 'BOOL', 'value': 9}, {'name': '%IX0.1', 'type': 'BOOL', 'value': 9}]
+plc_input_code:  #include "iec_std_lib.h"
+#include "iec_types_all.h" 
+#include <string.h>
+#include <stdlib.h>
+#include "/lfs/koff9454.ui/projects/plc_runtime_fuzzer/runtime/inputs.h"
+
+    
+extern BOOL *__IX0_0;
+extern BOOL *__IX0_1;
+
+void set_plc_input(const char *name, const char *type, PLC_Value value) {
+
+    if (strcmp(name, "%IX0.0") == 0) {
+        if (strcmp(type, "BOOL") == 0) {
+            *__IX0_0 = (BOOL)value._BOOL;
+        }
+    } else
+
+    if (strcmp(name, "%IX0.1") == 0) {
+        if (strcmp(type, "BOOL") == 0) {
+            *__IX0_1 = (BOOL)value._BOOL;
+        }
+    }
+}
+harness executable does not exist, creating
+~/projects/plc_runtime_fuzzer/runtime ~/projects/plc_runtime_fuzzer/code_analysis/src/programs/condition/condition_1
+(source_file (program_definition program_name: (identifier) (variable_definition (variable_definition_body name: (identifier) address: (address) type: (basic_data_type)) (variable_definition_body name: (identifier) address: (address) type: (basic_data_type)) (variable_definition_body name: (identifier) address: (address) type: (basic_data_type))) (if_statement condition: (binary_expression (variable name: (identifier)) (variable name: (identifier))) (assignment (variable name: (identifier)) (boolean)) (else_clause (assignment (variable name: (identifier)) (boolean))))) (configuration (identifier) (resource (identifier) (task (identifier) (time) (integer)) (program_instance (identifier) (identifier) (identifier)))))
+variable_name:  button1
+variable_type:  BOOL
+variable_address:  %IX0.0
+
+variable_name:  button2
+variable_type:  BOOL
+variable_address:  %IX0.1
+
+variable_name:  led
+variable_type:  BOOL
+variable_address:  %QX0.0
+
+visit_assignment:  (assignment (variable name: (identifier)) (boolean))
+
+variable name:  led
+visit_assignment:  (assignment (variable name: (identifier)) (boolean))
+
+variable name:  led
+
+variables:  {'button1': ('BOOL', '%IX0.0'), 'button2': ('BOOL', '%IX0.1'), 'led': ('BOOL', '%QX0.0')}
+content:  %IX0.0,BOOL,9
+
+content:  %IX0.1,BOOL,9
+
+plc_inputs:  [{'name': '%IX0.0', 'type': 'BOOL', 'value': 9}, {'name': '%IX0.1', 'type': 'BOOL', 'value': 9}]
+plc_input_code:  #include "iec_std_lib.h"
+#include "iec_types_all.h" 
+#include <string.h>
+#include <stdlib.h>
+#include "/lfs/koff9454.ui/projects/plc_runtime_fuzzer/runtime/inputs.h"
+
+    
+extern BOOL *__IX0_0;
+extern BOOL *__IX0_1;
+
+void set_plc_input(const char *name, const char *type, PLC_Value value) {
+
+    if (strcmp(name, "%IX0.0") == 0) {
+        if (strcmp(type, "BOOL") == 0) {
+            *__IX0_0 = (BOOL)value._BOOL;
+        }
+    } else
+
+    if (strcmp(name, "%IX0.1") == 0) {
+        if (strcmp(type, "BOOL") == 0) {
+            *__IX0_1 = (BOOL)value._BOOL;
+        }
+    }
+}
+Created temporary directory: /lfs/koff9454.ui/projects/plc_runtime_fuzzer/runtime/tmp.ePFZlN
+Generating IEC sources from ST file
+POUS.c
+POUS.h
+LOCATED_VARIABLES.h
+VARIABLES.csv
+STD_CONF.c
+STD_CONF.h
+STD_RESSOURCE.c
+Compiling the fuzzing harness
+Compiling the set_input
+Creating the executable
+~/projects/plc_runtime_fuzzer/code_analysis/src/programs/condition/condition_1
+Current directory: /lfs/koff9454.ui/projects/plc_runtime_fuzzer/code_analysis/src/programs/condition/condition_1
+Files moved to /lfs/koff9454.ui/projects/plc_runtime_fuzzer/code_analysis/src/programs/condition/condition_1
+Running the fuzzers
+Workdir: "/lfs/koff9454.ui/projects/plc_runtime_fuzzer/code_analysis/src/programs/condition/condition_1/runs/run-21"
+Out dir at "fuzzer-outdir" already exists.
+Let's fuzz :)
+[Stats #0] run time: 0h-0m-0s, clients: 1, corpus: 0, objectives: 0, executions: 0, exec/sec: 0.000
+[Testcase #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 0, executions: 1, exec/sec: 0.000
+We imported 1 inputs from disk.
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 1, executions: 1, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 2, executions: 1, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 3, executions: 1, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 4, executions: 1, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 5, executions: 1, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 6, executions: 1, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 7, executions: 1, exec/sec: 0.000
+[Stats #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 7, executions: 1, exec/sec: 0.000
+[Testcase #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 7, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 8, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 9, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 10, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 11, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 12, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 13, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 14, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 15, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 16, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 17, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 18, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 19, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 20, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 21, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 22, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 23, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 24, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 25, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 26, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 27, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 28, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 29, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 30, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 31, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 32, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 33, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 34, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 35, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 36, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 37, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 38, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 39, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 40, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 41, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 42, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 43, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 44, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 45, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 46, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 47, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 48, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 49, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 50, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 51, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 52, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 53, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 54, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 55, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 56, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 57, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 58, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 59, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 60, executions: 17, exec/sec: 0.000
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 61, executions: 17, exec/sec: 16.56
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 62, executions: 17, exec/sec: 16.41
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 63, executions: 17, exec/sec: 16.08
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 64, executions: 17, exec/sec: 15.76
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 65, executions: 17, exec/sec: 15.59
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 66, executions: 17, exec/sec: 15.37
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 67, executions: 17, exec/sec: 14.89
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 68, executions: 17, exec/sec: 14.56
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 69, executions: 17, exec/sec: 14.42
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 70, executions: 17, exec/sec: 14.23
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 71, executions: 17, exec/sec: 13.95
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 72, executions: 17, exec/sec: 13.63
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 73, executions: 17, exec/sec: 13.56
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 74, executions: 17, exec/sec: 13.48
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 75, executions: 17, exec/sec: 13.34
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 76, executions: 17, exec/sec: 13.20
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 77, executions: 17, exec/sec: 13.09
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 78, executions: 17, exec/sec: 12.77
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 79, executions: 17, exec/sec: 12.67
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 80, executions: 17, exec/sec: 12.53
+[Objective #0] run time: 0h-0m-1s, clients: 1, corpus: 2, objectives: 81, executions: 17, exec/sec: 12.46
+Crash limit reached: 1

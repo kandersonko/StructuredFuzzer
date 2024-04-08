@@ -26,7 +26,7 @@ indir/
 inputs.dict
 set_plc_input.c
 
-results/
+# results/
 
 # ignore matiec folder
 matiec/

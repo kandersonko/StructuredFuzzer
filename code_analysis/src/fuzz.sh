@@ -33,16 +33,16 @@ else
   $COMPILER $program ./harness.c
 fi
 
-# cp harness our-softplc
-# cp harness afl-softplc
+cp harness our-softplc
+cp harness afl-softplc
 
 # move the programs to the run folder
 cp harness runs/run-${run_id}/harness
 cp harness runs/run-${run_id}/fuzzer-softplc
-# cp harness runs/run-${run_id}/our-softplc
-# cp harness runs/run-${run_id}/afl-softplc
-# cp inputs.dict runs/run-${run_id}/afl-inputs.dict
-# cp inputs.dict runs/run-${run_id}/our-inputs.dict
+cp harness runs/run-${run_id}/our-softplc
+cp harness runs/run-${run_id}/afl-softplc
+cp inputs.dict runs/run-${run_id}/afl-inputs.dict
+cp inputs.dict runs/run-${run_id}/our-inputs.dict
 cp inputs.dict runs/run-${run_id}/fuzzer-inputs.dict
 
 
@@ -50,7 +50,7 @@ cp inputs.dict runs/run-${run_id}/fuzzer-inputs.dict
 
 # rm -rf runs/run-${run_id}/our-indir
 rm -rf runs/run-${run_id}/fuzzer-indir
-# cp -r indir runs/run-${run_id}/our-indir
+cp -r indir runs/run-${run_id}/our-indir
 cp -r indir runs/run-${run_id}/fuzzer-indir
 
 cd runs/run-${run_id}
@@ -62,8 +62,8 @@ echo "00" > afl-indir/testcase.txt
 rm -rf our-outdir afl-outdir 
 rm -rf fuzzer-outdir
 # create the output folders
-# mkdir -p our-outdir
-# mkdir -p afl-outdir
+mkdir -p our-outdir
+mkdir -p afl-outdir
 mkdir -p fuzzer-outdir
 
 # remove fuzzer log
@@ -80,6 +80,6 @@ export AFL_BENCH_UNTIL_CRASH=1
 #
 # screen -dmS "${program}-our" bash -c "timeout $duration apptainer exec ~/tools/afl.sif afl-fuzz -i afl-indir -o afl-outdir -x inputs.dict -- ./afl-softplc @@"
 timeout $duration apptainer exec ~/tools/afl.sif ~/tools/fuzzer -i fuzzer-indir -o fuzzer-outdir -x fuzzer-inputs.dict -n 1 -- ./fuzzer-softplc @@ &
-# timeout $duration apptainer exec ~/tools/afl.sif afl-fuzz -i our-indir -o our-outdir -x our-inputs.dict -- ./our-softplc @@ &
-# timeout $duration apptainer exec ~/tools/afl.sif afl-fuzz -i afl-indir -o afl-outdir -x afl-inputs.dict -- ./afl-softplc @@ &
+timeout $duration apptainer exec ~/tools/afl.sif afl-fuzz -i our-indir -o our-outdir -x our-inputs.dict -- ./our-softplc @@ &
+timeout $duration apptainer exec ~/tools/afl.sif afl-fuzz -i afl-indir -o afl-outdir -x afl-inputs.dict -- ./afl-softplc @@ &
 wait
