@@ -6,7 +6,7 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=4
 #SBATCH -p reg
-#SBATCH --array=0-30
+#SBATCH --array=100-120
 #SBATCH --output=jobs/fuzz_%A_%a.stdout
 #SBATCH --error=jobs/fuzz_%A_%a.stderr
 
@@ -40,7 +40,7 @@ iec2c -v
 duration=$((60 * 60 * 24))
 
 # Get the list of programs to fuzz in the `programs` directory as bash array
-folder=depth
+folder=width
 programs=($(ls programs/$folder))
 num_programs=${#programs[@]}
 

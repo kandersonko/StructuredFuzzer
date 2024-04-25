@@ -1,0 +1,8 @@
+1712779661.991044507s [Stats #0] run time: 0h-0m-0s, clients: 1, corpus: 0, objectives: 0, executions: 0, exec/sec: 0.000
+1712779662.011327066s [Testcase #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 0, executions: 1, exec/sec: 0.000
+1712779662.031939992s [Stats #0] run time: 0h-0m-0s, clients: 1, corpus: 1, objectives: 0, executions: 1, exec/sec: 0.000
+1712779662.04800936s [Testcase #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 0, executions: 25, exec/sec: 0.000
+1712779662.123137722s [Stats #0] run time: 0h-0m-0s, clients: 1, corpus: 2, objectives: 0, executions: 25, exec/sec: 0.000
+1712779662.125469482s [Testcase #0] run time: 0h-0m-0s, clients: 1, corpus: 3, objectives: 0, executions: 96, exec/sec: 0.000
+1712779662.571604084s [Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 3, objectives: 1, executions: 96, exec/sec: 0.000
+1712779662.765236511s [Objective #0] run time: 0h-0m-0s, clients: 1, corpus: 3, objectives: 2, executions: 96, exec/sec: 0.000
