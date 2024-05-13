@@ -1,3 +1,0 @@
-* Inbox
-** [2024-04-12 Fri 14:59] Normalize the execution speed for the PLC fuzzing paper
-The current execution speed of our fuzzer is slower than the others. Due in part to our fuzzer finding the bug in less than a second, which is not enough for computing the executions/sec.
