@@ -1,3 +1,5 @@
+
+// This code was originally derived from https://github.com/tmatijevich/tree-sitter-structured-text
 const unsignedInteger = seq(
   /\d/,
   repeat(choice('_', /\d/))
