@@ -102,7 +102,7 @@ impl ParsedInput {
         };
 
 
-        // Parse the input value baed on the variable type
+        // Parse the input value based on the variable type
         let input_value = match parts[1].trim() {
             "BOOL" => InputValue::Bool(parts[2].parse::<u8>().ok()?),
             "INT" => InputValue::Integer(parts[2].parse::<i32>().ok()?),
@@ -128,27 +128,6 @@ impl ParsedInput {
 
     }
 
-    // fn mutate(&mut self) {
-    //     let mut rng = rand::thread_rng();
-    //     match self.variable_type.size {
-    //         VariableSize::Bit => {
-    //             // For a bit, flip the boolean value
-    //             self.input_value = InputValue::Bool(rng.between(0, 1) as u8);
-    //         }
-    //         VariableSize::Byte => {
-    //             // For a byte, generate a random 8-bit number
-    //             self.input_value = InputValue::Integer(rng.between(0, 255) as i32)
-    //         }
-    //         VariableSize::Word => {
-    //             // For a word, generate a random 16-bit number
-    //             self.input_value = InputValue::Integer(rng.between(0, 65535) as i32);
-    //         }
-    //         VariableSize::Double => {
-    //             // For a double word, generate a random 32-bit float number
-    //             self.input_value = InputValue::Real(rng.between(0, 65535) as f32);
-    //         }
-    //     }
-    // }
 }
 
 fn format_variable_type(var_type: &VariableType) -> String {
@@ -181,14 +160,6 @@ impl PLCRandomInputMutator {
     }
 }
 
-// #[derive(Default, Debug)]
-// pub struct PLCRandomInputMutator ;
-
-// impl PLCRandomInputMutator {
-//     pub fn new() -> Self {
-//        Self
-//     }
-// }
 
 impl Named for PLCRandomInputMutator {
     fn name(&self) -> &str {
@@ -207,7 +178,7 @@ where
         input: &mut I,
         _stage_idx: i32,
     ) -> Result<MutationResult, Error> {
-        // Convert your input to string
+        // Convert the input to string
         let input_str = str::from_utf8(input.bytes())?;
         // let rng = state.rand_mut();
         let rng = &mut self.rng;

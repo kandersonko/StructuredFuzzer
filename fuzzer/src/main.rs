@@ -102,7 +102,7 @@ where
 }
 
 // how to use the fuzzer:
-//./fuzzer -x inputs.dict -i indir/ -o outdir -n 1000 -- ./depth_1 @@
+// Example run: ./fuzzer -x inputs.dict -i indir/ -o outdir -n 1000 -- ./program @@
 
 pub fn main() {
     let res = match Command::new(env!("CARGO_PKG_NAME"))
@@ -368,14 +368,6 @@ fn fuzz(
     .unwrap();
 
     println!("Let's fuzz :)");
-
-    // Setup a MOPT mutator
-    // let mutator = StdMOptMutator::new(
-    //     &mut state,
-    //     havoc_mutations().merge(tokens_mutations()),
-    //     7,
-    //     5,
-    // )?;
 
     let mutator = PLCRandomInputMutator::new();
 
