@@ -1,5 +1,6 @@
 
-// This code was originally derived from https://github.com/tmatijevich/tree-sitter-structured-text
+// This code was originally derived from https://github.com/tmatijevich/tree-sitter-structured-text (commit: 4334b32e4a9b4d9926ceaa6a768c2603ae275e41)
+// Modifications were made for variable declaration parsing and parsing of variable address fields.
 const unsignedInteger = seq(
   /\d/,
   repeat(choice('_', /\d/))
