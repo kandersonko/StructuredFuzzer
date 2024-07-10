@@ -1,6 +1,7 @@
 #!/bin/bash
 
-COMPILER=~/projects/plc_runtime_fuzzer/runtime/compile.sh
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+COMPILER="${script_dir}/../../runtime/compile.sh"
 
 
 folder=$1
@@ -18,7 +19,7 @@ if [ -d ./indir/ ]; then
   echo "input dir exist, skipping"
 else
   echo "input dir does not exist, creating"
-  python ~/projects/plc_runtime_fuzzer/code_analysis/src/main.py -f $program
+  python ${script_dir}/main.py -f $program
 fi
 
 # create the run folder
