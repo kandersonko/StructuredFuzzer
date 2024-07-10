@@ -19,7 +19,8 @@ OUTFILE_PATH=$OUTFILE_DIR/$OUTFILE
 INPUT_PATH=$OUTFILE_DIR/set_plc_input.c
 
 # The directory where the build.sh script is located
-build_dir=$(pwd)
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+build_dir="$script_dir"
 
 # export AFL_LLVM_DICT2FILE=~/auto_dictionary
 # Set AFL_LLVM_DICT2FILE to the output directory of the compiled program
