@@ -31,7 +31,7 @@ pushd $build_dir
 
 # Run the build script
 python3 ${script_dir}/../code_analysis/src/main.py -f ${STFILE_PATH}
-./build.sh ${STFILE_PATH} fresh ${OUTFILE_PATH} ${HARNESS_PATH} ${INPUT_PATH}
+${script_dir}/build.sh ${STFILE_PATH} fresh ${OUTFILE_PATH} ${HARNESS_PATH} ${INPUT_PATH}
 
 # Return to the original directory
 popd
