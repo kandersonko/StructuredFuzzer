@@ -19,7 +19,7 @@ OUTFILE_PATH=$OUTFILE_DIR/$OUTFILE
 INPUT_PATH=$OUTFILE_DIR/set_plc_input.c
 
 # The directory where the build.sh script is located
-build_dir=~/projects/plc_runtime_fuzzer/runtime/
+build_dir=$(pwd)
 
 # export AFL_LLVM_DICT2FILE=~/auto_dictionary
 # Set AFL_LLVM_DICT2FILE to the output directory of the compiled program
