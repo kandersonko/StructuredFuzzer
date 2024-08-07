@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Determine the directory where this script is located
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 # Check if an argument is provided
 if [ -z "$1" ]; then
@@ -15,7 +15,7 @@ HARNESS="$(realpath $4)"
 SET_INPUT="$(realpath $5)"
 
 CC=afl-clang-fast
-IECGENERATEDSOURCES="STD_CONF.c STD_RESSOURCE.c"  # These will be generated in the temp folder
+IECGENERATEDSOURCES="STD_CONF.c STD_RESSOURCE.c" # These will be generated in the temp folder
 SOURCES="$IECGENERATEDSOURCES main.c plc.c"
 CFLAGS="-std=gnu99 -w -I $MATIEC_C_INCLUDE_PATH -c"
 LDFLAGS="-lrt"
@@ -50,7 +50,7 @@ build() {
     for source in $SOURCES; do
         object_file=$(basename ${source//.c/.o})
         $CC $CFLAGS $source -o $object_file
-        OBJECTS="$OBJECTS $object_file"  # Append the object file name to OBJECTS
+        OBJECTS="$OBJECTS $object_file" # Append the object file name to OBJECTS
     done
 
     # compile the fuzzing harness
@@ -86,3 +86,6 @@ clean() {
 
 # Default build
 build
+
+# Clean up the temporary directory
+clean
