@@ -42,3 +42,5 @@ runs/
 # temp folder
 tmp.*/
 /Dockerfile
+*.stderr
+*.stdout
