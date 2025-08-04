@@ -206,9 +206,9 @@ pub fn main() {
             .to_string(),
     );
     if fs::create_dir(&out_dir).is_err() {
-        println!("Out dir at {:?} already exists.", &out_dir);
+        println!("Output directory at {:?} already exists.", &out_dir);
         if !out_dir.is_dir() {
-            println!("Out dir at {:?} is not a valid directory!", &out_dir);
+            println!("Output directory at {:?} is not a valid directory!", &out_dir);
             return;
         }
     }
@@ -222,7 +222,7 @@ pub fn main() {
             .to_string(),
     );
     if !in_dir.is_dir() {
-        println!("In dir at {:?} is not a valid directory!", &in_dir);
+        println!("Input directory at {:?} is not a valid directory!", &in_dir);
         return;
     }
 
@@ -391,7 +391,7 @@ fn fuzz(
         .autotokens(&mut tokens)
         .parse_afl_cmdline(arguments)
         .coverage_map_size(MAP_SIZE)
-        .is_persistent(true)
+        .is_persistent(false)
         .build_dynamic_map(edges_observer, tuple_list!(time_observer))
         .unwrap();
 
@@ -408,8 +408,8 @@ fn fuzz(
 
     state
         .load_initial_inputs(&mut fuzzer, &mut executor, &mut mgr, &[seed_dir.clone()])
-        .unwrap_or_else(|_| {
-            println!("Failed to load initial corpus at {:?}", &seed_dir);
+        .unwrap_or_else( |err| {
+            println!("Failed to load initial corpus at {:?}, error: {:?}", &seed_dir, err);
             process::exit(0);
         });
     println!("We imported {} inputs from disk.", state.corpus().count());

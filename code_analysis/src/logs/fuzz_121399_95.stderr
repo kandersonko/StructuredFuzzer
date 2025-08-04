@@ -1,5 +1,0 @@
-srun: error: r6i3n9: task 0: Exited with exit code 126
-srun: error: Task 0 reported exit for a second time.
-srun: error: slurm_msg_sendto: address:port=10.148.2.197:40208 msg_type=8001: No error
-double free or corruption (fasttop)
-/var/spool/slurmd/job121495/slurm_script: line 57: 3622561 Aborted                 (core dumped) srun ./fuzz.sh programs/$folder/${program} ${program}.st ${duration} $SLURM_ARRAY_TASK_ID

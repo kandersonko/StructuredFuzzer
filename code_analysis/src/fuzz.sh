@@ -1,7 +1,8 @@
 #!/bin/bash
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-COMPILER="${script_dir}/../../runtime/compile.sh"
+stfuzz_dir=/usr/local/bin/stfuzz/
+COMPILER="${stfuzz_dir}/runtime/compile.sh"
 
 
 folder=$1

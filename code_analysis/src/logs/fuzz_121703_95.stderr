@@ -1,2 +1,0 @@
-/var/spool/slurmd/job121799/slurm_script: line 32: 234421 Bus error               (core dumped) gcc --version
-/var/spool/slurmd/job121799/slurm_script: line 34: python: command not found

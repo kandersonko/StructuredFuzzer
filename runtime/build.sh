@@ -9,8 +9,14 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+# Check if the second argument is provided, if not, set a default name
+if [ -z "$2" ]; then
+    echo "Usage: $0 <path_to_main.st> <executable_name> <path_to_harness.c> <path_to_set_input.c>"
+    exit 1
+    fi
+
 STFILE="$(realpath $1)"
-EXECUTABLE_NAME=${3:-softplc}
+EXECUTABLE_NAME=${2:-softplc}
 HARNESS="$(realpath $4)"
 SET_INPUT="$(realpath $5)"
 
@@ -74,15 +80,6 @@ clean() {
     echo "Cleaned up temporary directory."
 }
 
-# # Check for additional command-line arguments
-# if [[ "$2" == "clean" ]]; then
-#     clean
-#     exit 0
-# elif [[ "$2" == "fresh" ]]; then
-#     clean
-#     build
-#     exit 0
-# fi
 
 # Default build
 build

@@ -4,10 +4,6 @@
 
 ST_FILE=$1
 
-CURRENT_DIR=`pwd`
-
-cd ~/projects/plc_runtime_fuzzer/runtime/
-
 # export AFL_LLVM_DICT2FILE=~/auto_dictionary
 
 ./build.sh $CURRENT_DIR/${ST_FILE}

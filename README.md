@@ -23,6 +23,23 @@ PROCESS DISCLOSED, OR REPRESENTS THAT ITS USE WOULD NOT INFRINGE PRIVATELY
 OWNED RIGHTS.
 
 
+## Installation
+To install the StructuredFuzzer, clone the repository and build the docker image:
+
+```bash
+git clone https://github.com/kandersonko/StructuredFuzzer
+cd StructuredFuzzer
+docker build -t structuredfuzzer .
+```
+
+## Usage
+To run the StructuredFuzzer, you can use the provided Docker image. The following command will start the fuzzer with a specified target program:
+
+```bash
+docker run --rm -v $(pwd)/test_programs:/stuser/home/test_programs structuredfuzzer /stuser/home/test_programs/your_target_program.st
+```
+
+
 
 
 ## Citation

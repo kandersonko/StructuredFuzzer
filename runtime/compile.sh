@@ -19,6 +19,7 @@ OUTFILE_PATH=$OUTFILE_DIR/$OUTFILE
 INPUT_PATH=$OUTFILE_DIR/set_plc_input.c
 
 # The directory where the build.sh script is located
+stfuzz_dir=/usr/local/bin/stfuzz
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 build_dir="$script_dir"
 
@@ -30,8 +31,8 @@ export AFL_LLVM_DICT2FILE="$OUTFILE_DIR/inputs.dict"
 pushd $build_dir
 
 # Run the build script
-python3 ${script_dir}/../code_analysis/src/main.py -f ${STFILE_PATH}
-${script_dir}/build.sh ${STFILE_PATH} fresh ${OUTFILE_PATH} ${HARNESS_PATH} ${INPUT_PATH}
+stcode -f ${STFILE_PATH}
+${stfuzz_dir}/runtime/build.sh ${STFILE_PATH} ${OUTFILE_PATH} ${HARNESS_PATH} ${INPUT_PATH}
 
 # Return to the original directory
 popd

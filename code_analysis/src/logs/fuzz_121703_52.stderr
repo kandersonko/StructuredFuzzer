@@ -1,3 +1,0 @@
-/var/spool/slurmd/job121756/slurm_script: line 47: echo: write error: Input/output error
-/var/spool/slurmd/job121756/slurm_script: line 51: 52 % 0: division by 0 (error token is "0")
-/var/spool/slurmd/job121756/slurm_script: line 57: 2684703 Aborted                 (core dumped) srun ./fuzz.sh programs/$folder/${program} ${program}.st ${duration} $SLURM_ARRAY_TASK_ID
